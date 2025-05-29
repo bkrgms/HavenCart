@@ -1,0 +1,42 @@
+Ev Tabanlı Ürün Satışı İçin E-Ticaret Sitesi - Yazılım İsterleri Dokümanı
+
+1. Proje Tanımı
+Bu proje, küçük ölçekli, ev tabanlı bir işletmenin el yapımı ürünler, doğal bakım ürünleri, dekoratif eşyalar ve benzeri fiziksel ürünleri internet üzerinden satabileceği bir e-ticaret web platformunun oluşturulmasını kapsamaktadır. Sistem, kullanıcı dostu bir arayüz ile sipariş alma, çoklu ödeme seçeneği sunma, ürün inceleme ve Amazon yönlendirme desteği gibi temel işlevleri içermelidir.
+
+2. Fonksiyonel İsterler
+- Kullanıcılar ürünleri listeleyip detaylarını görüntüleyebilmelidir.
+- Ürünler sepete eklenebilmelidir.
+- Kullanıcılar çevrimiçi sipariş verebilmelidir.
+- Yönetici panelinden en az 400 ürün ve ürün görseli yüklenebilmelidir.
+- Amazon affiliate/influencer ürün yönlendirme sayfası bulunmalıdır.
+- Sosyal medya bağlantıları (Instagram, Facebook) entegre edilmelidir.
+- Kullanıcılar ödeme işlemlerini güvenli biçimde tamamlayabilmelidir.
+- Aşağıdaki statik sayfalar sistemde yer almalıdır:
+- İletişim
+- Ödeme Koşulları
+- Feragatnameler
+- Satışta Olan Kitaplar
+- Kullanıcı İncelemeleri
+- Yorum ve değerlendirme sistemi bulunmalıdır.
+- Kayıt ve giriş (authentication) sistemi bulunmalıdır.
+- Sipariş geçmişi kullanıcı ve admin tarafından izlenebilmelidir.
+3. Fonksiyonel Olmayan İsterler
+- Site mobil uyumlu (responsive) olmalıdır.
+- Ödeme işlemleri SSL ve güvenli protokollerle korunmalıdır.
+- Sayfa yükleme süresi maksimum 3 saniye olmalıdır.
+- Yönetici, siteyi kolaylıkla güncelleyebilmelidir.
+- Kullanıcı arayüzü sade ve erişilebilir olmalıdır.
+- SEO uyumlu URL ve başlık yapıları kullanılmalıdır.
+4. Teknoloji Önerileri
+Backend: Node.js + Express
+Frontend: Vue.js, HTML/CSS
+Veritabanı: MongoDB (Atlas)
+Ödeme Sistemleri: Stripe / PayPal API
+Barındırma: Vercel / Render / Netlify
+
+5. Opsiyonel Özellikler
+- Blog veya haber alanı
+- E-posta bildirim sistemi (sipariş onayı vs.)
+- Admin panel üzerinden kullanıcı yönetimi
+- Ürün stok takibi
+- Çoklu dil desteği
