@@ -58,7 +58,20 @@ const Cart = () => {
       if (response.ok) {
         const items = await response.json();
         console.log('Cart items loaded:', items);
-        setCartItems(items);
+        
+        // Filter out items with null/undefined products
+        const validItems = items.filter(item => item && item.product && item.product._id);
+        setCartItems(validItems);
+        
+        // If some items were filtered out, show a warning
+        if (items.length !== validItems.length) {
+          console.warn('Some cart items were filtered out due to missing product data');
+          setSnackbar({ 
+            open: true, 
+            message: 'Bazı ürünler sepetinizden kaldırıldı (artık mevcut değil)', 
+            severity: 'warning' 
+          });
+        }
       } else {
         console.error('Failed to load cart items. Status:', response.status);
         const errorText = await response.text();
@@ -73,9 +86,9 @@ const Cart = () => {
     }
   };
 
-  const updateQuantity = async (productId, newQuantity) => {
+  const updateQuantity = async (productId, newQuantity, itemType = 'product') => {
     if (newQuantity <= 0) {
-      removeFromCart(productId);
+      removeFromCart(productId, itemType);
       return;
     }
 
@@ -89,14 +102,14 @@ const Cart = () => {
       const response = await fetch('http://localhost:5001/api/user/cart', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId, productId, quantity: newQuantity })
+        body: JSON.stringify({ userId, productId, quantity: newQuantity, type: itemType })
       });
 
       if (response.ok) {
         // Update local state
         setCartItems(prev => 
           prev.map(item => 
-            item.product._id === productId 
+            item.product && item.product._id === productId && item.type === itemType
               ? { ...item, quantity: newQuantity }
               : item
           )
@@ -117,7 +130,7 @@ const Cart = () => {
     }
   };
 
-  const removeFromCart = async (productId) => {
+  const removeFromCart = async (productId, itemType = 'product') => {
     try {
       const userId = getUserId();
       if (!userId) {
@@ -125,13 +138,15 @@ const Cart = () => {
         return;
       }
 
-      const response = await fetch(`http://localhost:5001/api/user/cart/${userId}/${productId}`, {
+      const response = await fetch(`http://localhost:5001/api/user/cart/${userId}/${productId}?type=${itemType}`, {
         method: 'DELETE'
       });
 
       if (response.ok) {
         // Update local state
-        setCartItems(prev => prev.filter(item => item.product._id !== productId));
+        setCartItems(prev => prev.filter(item => 
+          !(item.product && item.product._id === productId && item.type === itemType)
+        ));
         setSnackbar({ open: true, message: 'Ürün sepetten çıkarıldı', severity: 'info' });
         // Refresh cart count in navbar
         if (window.refreshCartCount) {
@@ -151,7 +166,7 @@ const Cart = () => {
 
   const calculateSubtotal = () => {
     return cartItems.reduce((total, item) => {
-      if (item.product && item.product.price) {
+      if (item && item.product && item.product.price && item.quantity) {
         return total + (item.product.price * item.quantity);
       }
       return total;
@@ -218,82 +233,89 @@ const Cart = () => {
           {/* Sepet Ürünleri */}
           <Grid item xs={12} md={8}>
             <Paper sx={{ p: 3 }}>
-              {cartItems.map((item) => (
-                <Box key={item.product._id}>
-                  <Grid container spacing={2} alignItems="center" sx={{ py: 2 }}>
-                    <Grid item xs={3}>
-                      <img
-                        src={item.product.image || 'https://via.placeholder.com/150'}
-                        alt={item.product.name}
-                        style={{ 
-                          width: '100%', 
-                          height: 'auto',
-                          borderRadius: '8px',
-                          objectFit: 'cover'
-                        }}
-                      />
-                    </Grid>
-                    <Grid item xs={4}>
-                      <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-                        {item.product.name}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        ₺{item.product.price}
-                      </Typography>
-                      <Typography variant="caption" color="text.secondary">
-                        Stok: {item.product.stock}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={3}>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        <IconButton
-                          size="small"
-                          onClick={() => updateQuantity(item.product._id, item.quantity - 1)}
-                          disabled={item.quantity <= 1}
-                        >
-                          <RemoveIcon />
-                        </IconButton>
-                        <TextField
-                          size="small"
-                          value={item.quantity}
-                          onChange={(e) => {
-                            const newQuantity = parseInt(e.target.value) || 1;
-                            if (newQuantity > 0 && newQuantity <= item.product.stock) {
-                              updateQuantity(item.product._id, newQuantity);
-                            }
-                          }}
-                          inputProps={{
-                            min: 1,
-                            max: item.product.stock,
-                            style: { textAlign: 'center', width: '60px' }
+              {cartItems.map((item) => {
+                // Additional safety check
+                if (!item || !item.product || !item.product._id) {
+                  return null;
+                }
+                
+                return (
+                  <Box key={item.product._id}>
+                    <Grid container spacing={2} alignItems="center" sx={{ py: 2 }}>
+                      <Grid item xs={3}>
+                        <img
+                          src={item.product.image || 'https://via.placeholder.com/150'}
+                          alt={item.product.name || 'Ürün'}
+                          style={{ 
+                            width: '100%', 
+                            height: 'auto',
+                            borderRadius: '8px',
+                            objectFit: 'cover'
                           }}
                         />
+                      </Grid>
+                      <Grid item xs={4}>
+                        <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+                          {item.product.name || 'Bilinmeyen Ürün'}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          ₺{item.product.price || 0}
+                        </Typography>
+                        <Typography variant="caption" color="text.secondary">
+                          Stok: {item.product.stock || 0}
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={3}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                          <IconButton
+                            size="small"
+                            onClick={() => updateQuantity(item.product._id, (item.quantity || 1) - 1, item.type)}
+                            disabled={(item.quantity || 1) <= 1}
+                          >
+                            <RemoveIcon />
+                          </IconButton>
+                          <TextField
+                            size="small"
+                            value={item.quantity || 1}
+                            onChange={(e) => {
+                              const newQuantity = parseInt(e.target.value) || 1;
+                              if (newQuantity > 0 && newQuantity <= (item.product.stock || 999)) {
+                                updateQuantity(item.product._id, newQuantity, item.type);
+                              }
+                            }}
+                            inputProps={{
+                              min: 1,
+                              max: item.product.stock || 999,
+                              style: { textAlign: 'center', width: '60px' }
+                            }}
+                          />
+                          <IconButton
+                            size="small"
+                            onClick={() => updateQuantity(item.product._id, (item.quantity || 1) + 1, item.type)}
+                            disabled={(item.quantity || 1) >= (item.product.stock || 999)}
+                          >
+                            <AddIcon />
+                          </IconButton>
+                        </Box>
+                      </Grid>
+                      <Grid item xs={1}>
+                        <Typography variant="h6" sx={{ fontWeight: 'bold', textAlign: 'center' }}>
+                          ₺{((item.product.price || 0) * (item.quantity || 1)).toFixed(2)}
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={1}>
                         <IconButton
-                          size="small"
-                          onClick={() => updateQuantity(item.product._id, item.quantity + 1)}
-                          disabled={item.quantity >= item.product.stock}
+                          color="error"
+                          onClick={() => removeFromCart(item.product._id, item.type)}
                         >
-                          <AddIcon />
+                          <DeleteIcon />
                         </IconButton>
-                      </Box>
+                      </Grid>
                     </Grid>
-                    <Grid item xs={1}>
-                      <Typography variant="h6" sx={{ fontWeight: 'bold', textAlign: 'center' }}>
-                        ₺{(item.product.price * item.quantity).toFixed(2)}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={1}>
-                      <IconButton
-                        color="error"
-                        onClick={() => removeFromCart(item.product._id)}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </Grid>
-                  </Grid>
-                  <Divider />
-                </Box>
-              ))}
+                    <Divider />
+                  </Box>
+                );
+              })}
             </Paper>
           </Grid>
 

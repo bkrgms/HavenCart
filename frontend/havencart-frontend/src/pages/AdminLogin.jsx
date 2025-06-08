@@ -40,29 +40,29 @@ const AdminLogin = () => {
     setError('');
 
     try {
-      const response = await fetch('http://localhost:5001/api/auth/admin/login', {
+      const response = await fetch('http://localhost:5001/api/admin/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ email: form.email, password: form.password }),
       });
 
       const data = await response.json();
 
-      if (!response.ok) {
-        throw new Error(data.error || 'Giriş başarısız');
+      if (response.ok) {
+        // Store token and user data
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        localStorage.setItem('userRole', 'admin');
+        
+        navigate('/admin/dashboard');
+      } else {
+        setError(data.error || 'Giriş başarısız');
       }
-
-      // Store token and admin info
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('user', JSON.stringify(data.admin));
-      localStorage.setItem('userRole', 'admin');
-
-      // Redirect to admin dashboard
-      navigate('/admin/dashboard');
-    } catch (err) {
-      setError(err.message);
+    } catch (error) {
+      console.error('Login error:', error);
+      setError('Bağlantı hatası. Lütfen tekrar deneyin.');
     } finally {
       setLoading(false);
     }

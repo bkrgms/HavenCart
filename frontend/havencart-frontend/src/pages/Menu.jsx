@@ -1,4 +1,4 @@
-import React, { useState, createContext, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Container,
   Grid,
@@ -23,60 +23,59 @@ import {
   Alert,
   Badge,
   Pagination,
+  Avatar,
+  Rating,
 } from '@mui/material';
 import {
   Search as SearchIcon,
-  ShoppingCart as ShoppingCartIcon,
+  AccessTime as AccessTimeIcon,
+  Restaurant as RestaurantIcon,
   Favorite as FavoriteIcon,
   FavoriteBorder as FavoriteBorderIcon,
   Star as StarIcon,
   Visibility as VisibilityIcon,
+  Person as PersonIcon,
+  LocalFireDepartment as DifficultyIcon,
+  ShoppingCart as ShoppingCartIcon,
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 
-// Kategoriler
+// Yemek kategorileri
 const categories = [
   'Tümü',
-  'Ev Dekorasyon',
-  'Mutfak',
-  'Aydınlatma',
-  'Banyo',
-  'Tekstil',
-  'Elektronik',
-  'Bahçe',
-  'Mobilya',
-  'Yatak Odası',
-  'Oturma Odası'
+  'Çorbalar',
+  'Ana Yemekler',
+  'Et Yemekleri',
+  'Tavuk Yemekleri',
+  'Balık & Deniz Ürünleri',
+  'Sebze Yemekleri',
+  'Pilavlar',
+  'Makarnalar',
+  'Salatalar',
+  'Tatlılar',
+  'İçecekler',
+  'Aperatifler',
+  'Kahvaltı',
+  'Hamur İşleri'
 ];
 
-export const MenuContext = createContext();
+// Zorluk seviyeleri
+const difficultyLevels = ['Kolay', 'Orta', 'Zor'];
 
-const MenuProvider = ({ children }) => {
-  const [menuItems, setMenuItems] = useState([]);
-  
-  useEffect(() => {
-    fetch('http://localhost:5001/api/products')
-      .then(res => res.json())
-      .then(data => setMenuItems(data))
-      .catch(error => console.error('Error loading products:', error));
-  }, []);
-  
-  return (
-    <MenuContext.Provider value={{ menuItems, setMenuItems }}>
-      {children}
-    </MenuContext.Provider>
-  );
-};
+// Pişirme süreleri
+const cookingTimes = ['15 dk', '30 dk', '45 dk', '1 saat', '1+ saat'];
 
 const Menu = () => {
-  const { menuItems } = useContext(MenuContext);
   const navigate = useNavigate();
+  const [recipes, setRecipes] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('Tümü');
+  const [selectedDifficulty, setSelectedDifficulty] = useState('');
+  const [selectedTime, setSelectedTime] = useState('');
   const [userFavorites, setUserFavorites] = useState([]);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
   const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 20;
+  const recipesPerPage = 12;
 
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   const isLoggedIn = localStorage.getItem('token');
@@ -88,40 +87,47 @@ const Menu = () => {
   };
 
   useEffect(() => {
+    loadRecipes();
     if (isLoggedIn && getUserId()) {
       loadUserFavorites();
     }
   }, [isLoggedIn]);
 
-  // Reset to first page when search or category changes
+  // Reset to first page when filters change
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchTerm, selectedCategory]);
+  }, [searchTerm, selectedCategory, selectedDifficulty, selectedTime]);
+
+  const loadRecipes = async () => {
+    try {
+      const response = await fetch('http://localhost:5001/api/recipes');
+      if (response.ok) {
+        const data = await response.json();
+        setRecipes(data);
+      }
+    } catch (error) {
+      console.error('Error loading recipes:', error);
+      // Fallback to sample data if API fails
+      setRecipes(generateSampleRecipes());
+    }
+  };
 
   const loadUserFavorites = async () => {
     try {
       const userId = getUserId();
-      if (!userId) {
-        console.error('User ID not found. User object:', user);
-        return;
-      }
+      if (!userId) return;
       
-      console.log('Loading favorites for user ID:', userId);
-      const response = await fetch(`http://localhost:5001/api/user/favorites/${userId}`);
+      const response = await fetch(`http://localhost:5001/api/user/recipe-favorites/${userId}`);
       if (response.ok) {
         const favorites = await response.json();
         setUserFavorites(favorites.map(fav => fav._id));
-      } else {
-        console.error('Failed to load favorites. Status:', response.status);
-        const errorText = await response.text();
-        console.error('Error response:', errorText);
       }
     } catch (error) {
       console.error('Error loading favorites:', error);
     }
   };
 
-  const handleToggleFavorite = async (productId) => {
+  const handleToggleFavorite = async (recipeId) => {
     if (!isLoggedIn) {
       setSnackbar({ open: true, message: 'Favorilere eklemek için giriş yapın', severity: 'warning' });
       return;
@@ -129,39 +135,33 @@ const Menu = () => {
 
     const userId = getUserId();
     if (!userId) {
-      console.error('User ID not found. User object:', user);
       setSnackbar({ open: true, message: 'Kullanıcı bilgisi bulunamadı. Lütfen tekrar giriş yapın.', severity: 'error' });
       return;
     }
 
-    const isFavorite = userFavorites.includes(productId);
+    const isFavorite = userFavorites.includes(recipeId);
 
     try {
-      console.log('Toggling favorite for user:', userId, 'product:', productId);
       if (isFavorite) {
-        const response = await fetch(`http://localhost:5001/api/user/favorites/${userId}/${productId}`, {
+        const response = await fetch(`http://localhost:5001/api/user/recipe-favorites/${userId}/${recipeId}`, {
           method: 'DELETE'
         });
         if (response.ok) {
-          setUserFavorites(prev => prev.filter(id => id !== productId));
-          setSnackbar({ open: true, message: 'Ürün favorilerden çıkarıldı', severity: 'info' });
+          setUserFavorites(prev => prev.filter(id => id !== recipeId));
+          setSnackbar({ open: true, message: 'Tarif favorilerden çıkarıldı', severity: 'info' });
         } else {
-          const errorText = await response.text();
-          console.error('Remove favorite error:', response.status, errorText);
           throw new Error('Failed to remove from favorites');
         }
       } else {
-        const response = await fetch('http://localhost:5001/api/user/favorites', {
+        const response = await fetch('http://localhost:5001/api/user/recipe-favorites', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ userId: userId, productId })
+          body: JSON.stringify({ userId: userId, recipeId })
         });
         if (response.ok) {
-          setUserFavorites(prev => [...prev, productId]);
-          setSnackbar({ open: true, message: 'Ürün favorilere eklendi', severity: 'success' });
+          setUserFavorites(prev => [...prev, recipeId]);
+          setSnackbar({ open: true, message: 'Tarif favorilere eklendi', severity: 'success' });
         } else {
-          const errorText = await response.text();
-          console.error('Add favorite error:', response.status, errorText);
           throw new Error('Failed to add to favorites');
         }
       }
@@ -171,7 +171,7 @@ const Menu = () => {
     }
   };
 
-  const handleAddToCart = async (productId) => {
+  const handleAddToCart = async (recipeId) => {
     if (!isLoggedIn) {
       setSnackbar({ open: true, message: 'Sepete eklemek için giriş yapın', severity: 'warning' });
       return;
@@ -179,27 +179,28 @@ const Menu = () => {
 
     const userId = getUserId();
     if (!userId) {
-      console.error('User ID not found. User object:', user);
       setSnackbar({ open: true, message: 'Kullanıcı bilgisi bulunamadı. Lütfen tekrar giriş yapın.', severity: 'error' });
       return;
     }
 
     try {
-      console.log('Adding to cart for user:', userId, 'product:', productId);
       const response = await fetch('http://localhost:5001/api/user/cart', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId: userId, productId, quantity: 1 })
+        body: JSON.stringify({ 
+          userId: userId, 
+          productId: recipeId, 
+          quantity: 1,
+          type: 'recipe' // Mark as recipe item
+        })
       });
       if (response.ok) {
-        setSnackbar({ open: true, message: 'Ürün sepete eklendi', severity: 'success' });
+        setSnackbar({ open: true, message: 'Tarif sepete eklendi (malzemeler listesi)', severity: 'success' });
         // Refresh cart count in navbar
         if (window.refreshCartCount) {
           window.refreshCartCount();
         }
       } else {
-        const errorText = await response.text();
-        console.error('Add to cart error:', response.status, errorText);
         throw new Error('Failed to add to cart');
       }
     } catch (error) {
@@ -208,272 +209,305 @@ const Menu = () => {
     }
   };
 
-  const filteredItems = menuItems.filter(item => {
-    const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         item.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         item.brand?.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory === 'Tümü' || item.category === selectedCategory;
-    return matchesSearch && matchesCategory;
+  const filteredRecipes = recipes.filter(recipe => {
+    const matchesSearch = recipe.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         recipe.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         recipe.ingredients?.some(ing => ing.toLowerCase().includes(searchTerm.toLowerCase()));
+    
+    const matchesCategory = selectedCategory === 'Tümü' || recipe.category === selectedCategory;
+    const matchesDifficulty = !selectedDifficulty || recipe.difficulty === selectedDifficulty;
+    const matchesTime = !selectedTime || recipe.cookTime === selectedTime;
+
+    return matchesSearch && matchesCategory && matchesDifficulty && matchesTime;
   });
 
-  // Calculate pagination
-  const totalProducts = filteredItems.length;
-  const totalPages = Math.ceil(totalProducts / productsPerPage);
-  const startIndex = (currentPage - 1) * productsPerPage;
-  const endIndex = startIndex + productsPerPage;
-  const currentProducts = filteredItems.slice(startIndex, endIndex);
+  // Pagination
+  const totalPages = Math.ceil(filteredRecipes.length / recipesPerPage);
+  const startIndex = (currentPage - 1) * recipesPerPage;
+  const currentRecipes = filteredRecipes.slice(startIndex, startIndex + recipesPerPage);
 
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
-    // Scroll to top when page changes
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
+    <Container maxWidth="xl" sx={{ py: 4 }}>
       {/* Header */}
-      <Box sx={{ mb: 4, textAlign: 'center' }}>
-        <Typography variant="h3" component="h1" gutterBottom sx={{ fontWeight: 'bold' }}>
-          Ürünlerimiz
+      <Box sx={{ textAlign: 'center', mb: 6 }}>
+        <Typography 
+          variant="h3" 
+          component="h1" 
+          gutterBottom 
+          sx={{ 
+            fontWeight: 'bold',
+            background: 'linear-gradient(45deg, #667eea 30%, #764ba2 90%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+          }}
+        >
+          Yemek Tarifleri
         </Typography>
-        <Typography variant="h6" color="text.secondary">
-          Evinizi güzelleştirecek kaliteli ürünleri keşfedin
+        <Typography variant="h6" color="text.secondary" sx={{ mb: 4 }}>
+          Enfes tariflerle mutfağınızı zenginleştirin • {recipes.length} tarif
         </Typography>
+        
+        {/* Search and Filters */}
+        <Box sx={{ mb: 4 }}>
+          <Grid container spacing={2} alignItems="center" justifyContent="center">
+            <Grid item xs={12} md={4}>
+              <TextField
+                fullWidth
+                placeholder="Tarif ara..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </Grid>
+            <Grid item xs={12} md={2}>
+              <FormControl fullWidth>
+                <InputLabel>Kategori</InputLabel>
+                <Select
+                  value={selectedCategory}
+                  label="Kategori"
+                  onChange={(e) => setSelectedCategory(e.target.value)}
+                >
+                  {categories.map((category) => (
+                    <MenuItem key={category} value={category}>
+                      {category}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} md={2}>
+              <FormControl fullWidth>
+                <InputLabel>Zorluk</InputLabel>
+                <Select
+                  value={selectedDifficulty}
+                  label="Zorluk"
+                  onChange={(e) => setSelectedDifficulty(e.target.value)}
+                >
+                  <MenuItem value="">Tümü</MenuItem>
+                  {difficultyLevels.map((level) => (
+                    <MenuItem key={level} value={level}>
+                      {level}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} md={2}>
+              <FormControl fullWidth>
+                <InputLabel>Süre</InputLabel>
+                <Select
+                  value={selectedTime}
+                  label="Süre"
+                  onChange={(e) => setSelectedTime(e.target.value)}
+                >
+                  <MenuItem value="">Tümü</MenuItem>
+                  {cookingTimes.map((time) => (
+                    <MenuItem key={time} value={time}>
+                      {time}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+          </Grid>
+        </Box>
       </Box>
 
-      {/* Filters */}
-      <Box sx={{ mb: 4 }}>
-        <Grid container spacing={3} alignItems="center">
-          <Grid item xs={12} md={6}>
-            <TextField
-              fullWidth
-              placeholder="Ürün ara..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <FormControl fullWidth>
-              <InputLabel>Kategori</InputLabel>
-              <Select
-                value={selectedCategory}
-                label="Kategori"
-                onChange={(e) => setSelectedCategory(e.target.value)}
-              >
-                {categories.map((category) => (
-                  <MenuItem key={category} value={category}>
-                    {category}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item xs={12} md={2}>
-            <Typography variant="body2" color="text.secondary" align="center">
-              {totalProducts} ürün bulundu
-            </Typography>
-            <Typography variant="body2" color="text.secondary" align="center">
-              Sayfa {currentPage} / {totalPages}
-            </Typography>
-          </Grid>
-        </Grid>
-      </Box>
-
-      {/* Products Grid */}
+      {/* Recipe Grid */}
       <Grid container spacing={3}>
-        {currentProducts.map((item) => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={item._id}>
-            <Card
-              sx={{
+        {currentRecipes.map((recipe) => (
+          <Grid item xs={12} sm={6} md={4} lg={3} key={recipe._id}>
+            <Card 
+              sx={{ 
                 height: '100%',
                 display: 'flex',
                 flexDirection: 'column',
                 transition: 'all 0.3s ease',
-                '&:hover': {
-                  transform: 'translateY(-4px)',
-                  boxShadow: 4,
-                },
+                '&:hover': { 
+                  transform: 'translateY(-4px)', 
+                  boxShadow: 6 
+                }
               }}
             >
               <Box sx={{ position: 'relative' }}>
                 <CardMedia
                   component="img"
                   height="200"
-                  image={item.image || 'https://via.placeholder.com/300'}
-                  alt={item.name}
+                  image={recipe.image || `https://source.unsplash.com/400x300/?${encodeURIComponent(recipe.name)},food`}
+                  alt={recipe.name}
+                  sx={{ cursor: 'pointer' }}
+                  onClick={() => navigate(`/recipe/${recipe._id}`)}
                 />
+                
+                {/* Favorite Button */}
                 <IconButton
                   sx={{
                     position: 'absolute',
                     top: 8,
                     right: 8,
-                    bgcolor: 'white',
-                    '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.9)' },
+                    backgroundColor: 'rgba(255,255,255,0.9)',
+                    '&:hover': { backgroundColor: 'rgba(255,255,255,1)' }
                   }}
-                  onClick={() => handleToggleFavorite(item._id)}
+                  onClick={() => handleToggleFavorite(recipe._id)}
                 >
-                  {userFavorites.includes(item._id) ? (
-                    <FavoriteIcon sx={{ color: 'red' }} />
+                  {userFavorites.includes(recipe._id) ? (
+                    <FavoriteIcon color="error" />
                   ) : (
                     <FavoriteBorderIcon />
                   )}
                 </IconButton>
-                {item.category && (
-                  <Chip
-                    label={item.category}
-                    size="small"
-                    sx={{
-                      position: 'absolute',
-                      top: 8,
-                      left: 8,
-                      bgcolor: 'primary.main',
-                      color: 'white',
-                    }}
-                  />
-                )}
+
+                {/* Difficulty Badge */}
+                <Chip
+                  label={recipe.difficulty}
+                  size="small"
+                  color={
+                    recipe.difficulty === 'Kolay' ? 'success' : 
+                    recipe.difficulty === 'Orta' ? 'warning' : 'error'
+                  }
+                  sx={{
+                    position: 'absolute',
+                    top: 8,
+                    left: 8,
+                  }}
+                />
               </Box>
-              
+
               <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
-                <Typography gutterBottom variant="h6" component="h2" sx={{ fontWeight: 'bold' }}>
-                  {item.name}
+                <Typography 
+                  variant="h6" 
+                  component="h3" 
+                  gutterBottom
+                  sx={{ 
+                    fontWeight: 'bold',
+                    minHeight: '3rem',
+                    cursor: 'pointer',
+                    '&:hover': { color: 'primary.main' }
+                  }}
+                  onClick={() => navigate(`/recipe/${recipe._id}`)}
+                >
+                  {recipe.name}
                 </Typography>
                 
-                {item.brand && (
-                  <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-                    {item.brand}
-                  </Typography>
-                )}
-
-                <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                  <Box sx={{ display: 'flex', alignItems: 'center', mr: 2 }}>
-                    {[...Array(5)].map((_, i) => (
-                      <StarIcon 
-                        key={i} 
-                        sx={{ 
-                          fontSize: 16, 
-                          color: i < (item.averageRating || 0) ? '#FFC107' : '#E0E0E0' 
-                        }} 
-                      />
-                    ))}
-                  </Box>
-                  <Typography variant="body2" color="text.secondary">
-                    ({item.totalReviews || 0})
-                  </Typography>
-                </Box>
-
                 <Typography 
                   variant="body2" 
                   color="text.secondary" 
-                  paragraph
                   sx={{ 
+                    mb: 2,
+                    flexGrow: 1,
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
                     display: '-webkit-box',
                     WebkitLineClamp: 2,
-                    WebkitBoxOrient: 'vertical'
+                    WebkitBoxOrient: 'vertical',
                   }}
                 >
-                  {item.description}
+                  {recipe.description}
                 </Typography>
 
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: 'auto' }}>
-                  <Typography variant="h5" color="primary" sx={{ fontWeight: 'bold' }}>
-                    ₺{item.price}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    Stok: {item.stock || 0}
-                  </Typography>
+                {/* Recipe Info */}
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                    <AccessTimeIcon fontSize="small" color="action" />
+                    <Typography variant="caption">{recipe.cookTime}</Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                    <PersonIcon fontSize="small" color="action" />
+                    <Typography variant="caption">{recipe.servings} kişi</Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                    <Rating 
+                      value={recipe.rating || 4.5} 
+                      readOnly 
+                      size="small" 
+                      precision={0.1}
+                    />
+                    <Typography variant="caption">({recipe.reviewCount || 0})</Typography>
+                  </Box>
                 </Box>
 
-                <Box sx={{ display: 'flex', gap: 1, mt: 2 }}>
-                  <Button
-                    variant="contained"
-                    fullWidth
-                    startIcon={<ShoppingCartIcon />}
-                    sx={{
-                      py: 1,
-                      fontWeight: 'bold',
-                      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                      '&:hover': {
-                        background: 'linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%)',
-                      },
-                    }}
-                    onClick={() => handleAddToCart(item._id)}
-                    disabled={item.stock === 0}
-                  >
-                    {item.stock === 0 ? 'Stokta Yok' : 'Sepete Ekle'}
-                  </Button>
+                <Chip 
+                  label={recipe.category} 
+                  size="small" 
+                  variant="outlined" 
+                  sx={{ alignSelf: 'flex-start', mb: 2 }}
+                />
+
+                {/* Action Buttons */}
+                <Stack direction="row" spacing={1}>
                   <Button
                     variant="outlined"
-                    onClick={() => navigate(`/product/${item._id}`)}
-                    sx={{ minWidth: 'auto' }}
+                    startIcon={<ShoppingCartIcon />}
+                    onClick={() => handleAddToCart(recipe._id)}
+                    sx={{ flex: 1 }}
                   >
-                    <VisibilityIcon />
+                    Sepet
                   </Button>
-                </Box>
+                  <Button
+                    variant="contained"
+                    startIcon={<VisibilityIcon />}
+                    onClick={() => navigate(`/recipe/${recipe._id}`)}
+                    sx={{
+                      flex: 1,
+                      background: 'linear-gradient(45deg, #667eea 30%, #764ba2 90%)',
+                      '&:hover': {
+                        background: 'linear-gradient(45deg, #5a6fd8 30%, #6b4190 90%)',
+                      }
+                    }}
+                  >
+                    Gör
+                  </Button>
+                </Stack>
               </CardContent>
             </Card>
           </Grid>
         ))}
       </Grid>
 
+      {/* Empty State */}
+      {currentRecipes.length === 0 && (
+        <Box sx={{ textAlign: 'center', py: 8 }}>
+          <RestaurantIcon sx={{ fontSize: 64, color: 'text.secondary', mb: 2 }} />
+          <Typography variant="h5" gutterBottom>
+            Tarif bulunamadı
+          </Typography>
+          <Typography variant="body1" color="text.secondary">
+            Arama kriterlerinizi değiştirip tekrar deneyin.
+          </Typography>
+        </Box>
+      )}
+
       {/* Pagination */}
       {totalPages > 1 && (
-        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 6 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
           <Pagination
             count={totalPages}
             page={currentPage}
             onChange={handlePageChange}
             color="primary"
             size="large"
-            showFirstButton
-            showLastButton
-            sx={{
-              '& .MuiPaginationItem-root': {
-                fontWeight: 'bold',
-              },
-              '& .Mui-selected': {
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                color: 'white',
-                '&:hover': {
-                  background: 'linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%)',
-                },
-              },
-            }}
           />
         </Box>
       )}
 
-      {currentProducts.length === 0 && (
-        <Box sx={{ textAlign: 'center', py: 8 }}>
-          <Typography variant="h6" gutterBottom>
-            Aradığınız kriterlere uygun ürün bulunamadı
-          </Typography>
-          <Typography variant="body1" color="text.secondary">
-            Farklı arama terimleri veya kategoriler deneyebilirsiniz
-          </Typography>
-        </Box>
-      )}
-
-      {/* Snackbar for notifications */}
+      {/* Snackbar */}
       <Snackbar
         open={snackbar.open}
         autoHideDuration={3000}
         onClose={() => setSnackbar({ ...snackbar, open: false })}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       >
-        <Alert 
-          onClose={() => setSnackbar({ ...snackbar, open: false })} 
-          severity={snackbar.severity}
-          sx={{ width: '100%' }}
-        >
+        <Alert severity={snackbar.severity} onClose={() => setSnackbar({ ...snackbar, open: false })}>
           {snackbar.message}
         </Alert>
       </Snackbar>
@@ -481,5 +515,96 @@ const Menu = () => {
   );
 };
 
-export { MenuProvider };
+// Sample recipe data generator (400 recipes)
+const generateSampleRecipes = () => {
+  const turkishRecipes = [
+    // Çorbalar
+    { name: 'Mercimek Çorbası', category: 'Çorbalar', difficulty: 'Kolay', cookTime: '30 dk', servings: 4, description: 'Geleneksel Türk mutfağının vazgeçilmez çorbası. Besleyici ve lezzetli.' },
+    { name: 'Yayla Çorbası', category: 'Çorbalar', difficulty: 'Orta', cookTime: '45 dk', servings: 6, description: 'Yoğurt ve pirinçle hazırlanan nefis Anadolu çorbası.' },
+    { name: 'İşkembe Çorbası', category: 'Çorbalar', difficulty: 'Zor', cookTime: '1+ saat', servings: 4, description: 'Türk mutfağının geleneksel kahvaltı çorbası.' },
+    { name: 'Tarhana Çorbası', category: 'Çorbalar', difficulty: 'Kolay', cookTime: '15 dk', servings: 4, description: 'Fermente tarhana ile hazırlanan besleyici çorba.' },
+    { name: 'Ezogelin Çorbası', category: 'Çorbalar', difficulty: 'Orta', cookTime: '30 dk', servings: 6, description: 'Kırmızı mercimek ve bulgurla hazırlanan Gaziantep usulü çorba.' },
+    
+    // Ana Yemekler
+    { name: 'Döner Kebap', category: 'Et Yemekleri', difficulty: 'Zor', cookTime: '1+ saat', servings: 8, description: 'Türk mutfağının dünyaca ünlü et yemeği.' },
+    { name: 'Adana Kebap', category: 'Et Yemekleri', difficulty: 'Orta', cookTime: '45 dk', servings: 4, description: 'Acılı kıyma ile hazırlanan geleneksel Adana kebabı.' },
+    { name: 'İskender Kebap', category: 'Et Yemekleri', difficulty: 'Orta', cookTime: '30 dk', servings: 4, description: 'Yoğurt ve tereyağı ile servis edilen döner.' },
+    { name: 'Şiş Kebap', category: 'Et Yemekleri', difficulty: 'Kolay', cookTime: '30 dk', servings: 4, description: 'Marine edilmiş kuzu etinden hazırlanan şiş kebap.' },
+    { name: 'Köfte', category: 'Et Yemekleri', difficulty: 'Kolay', cookTime: '30 dk', servings: 6, description: 'Türk mutfağının klasik köfte tarifi.' },
+    
+    // Tavuk Yemekleri
+    { name: 'Tavuk Şiş', category: 'Tavuk Yemekleri', difficulty: 'Kolay', cookTime: '30 dk', servings: 4, description: 'Marine edilmiş tavuk göğsü ile hazırlanan şiş.' },
+    { name: 'Tavuk Döner', category: 'Tavuk Yemekleri', difficulty: 'Orta', cookTime: '1 saat', servings: 6, description: 'Tavuk etinden hazırlanan döner kebap.' },
+    { name: 'Tavuk Sote', category: 'Tavuk Yemekleri', difficulty: 'Kolay', cookTime: '30 dk', servings: 4, description: 'Sebzeli tavuk sote, hafif ve lezzetli.' },
+    { name: 'Tavuk Çorbası', category: 'Çorbalar', difficulty: 'Kolay', cookTime: '45 dk', servings: 6, description: 'Besleyici tavuk çorbası.' },
+    { name: 'Tavuk Pilav', category: 'Pilavlar', difficulty: 'Orta', cookTime: '45 dk', servings: 6, description: 'Tavuklu pilav, doyurucu ana yemek.' },
+    
+    // Sebze Yemekleri
+    { name: 'İmam Bayıldı', category: 'Sebze Yemekleri', difficulty: 'Orta', cookTime: '1 saat', servings: 4, description: 'Zeytinyağlı patlıcan yemeği.' },
+    { name: 'Dolma', category: 'Sebze Yemekleri', difficulty: 'Zor', cookTime: '1+ saat', servings: 8, description: 'Pirinçli yaprak dolması.' },
+    { name: 'Türlü', category: 'Sebze Yemekleri', difficulty: 'Orta', cookTime: '45 dk', servings: 6, description: 'Karışık sebze yemeği.' },
+    { name: 'Pırasa Yemeği', category: 'Sebze Yemekleri', difficulty: 'Kolay', cookTime: '30 dk', servings: 4, description: 'Zeytinyağlı pırasa yemeği.' },
+    { name: 'Fasulye', category: 'Sebze Yemekleri', difficulty: 'Orta', cookTime: '1 saat', servings: 6, description: 'Etli kuru fasulye.' },
+    
+    // Pilavlar
+    { name: 'Pilav', category: 'Pilavlar', difficulty: 'Kolay', cookTime: '30 dk', servings: 6, description: 'Geleneksel Türk pilavı.' },
+    { name: 'Bulgur Pilavı', category: 'Pilavlar', difficulty: 'Kolay', cookTime: '25 dk', servings: 4, description: 'Besleyici bulgur pilavı.' },
+    { name: 'İç Pilav', category: 'Pilavlar', difficulty: 'Orta', cookTime: '45 dk', servings: 8, description: 'Kuş üzümü ve bademli pilav.' },
+    { name: 'Şehriyeli Pilav', category: 'Pilavlar', difficulty: 'Kolay', cookTime: '25 dk', servings: 4, description: 'Şehriye ile hazırlanan pilav.' },
+    { name: 'Nohutlu Pilav', category: 'Pilavlar', difficulty: 'Orta', cookTime: '45 dk', servings: 6, description: 'Nohut ve baharatlarla zenginleştirilmiş pilav.' },
+    
+    // Tatlılar
+    { name: 'Baklava', category: 'Tatlılar', difficulty: 'Zor', cookTime: '1+ saat', servings: 12, description: 'Türk mutfağının dünyaca ünlü tatlısı.' },
+    { name: 'Künefe', category: 'Tatlılar', difficulty: 'Orta', cookTime: '30 dk', servings: 6, description: 'Tel kadayıf ve peynirle hazırlanan sıcak tatlı.' },
+    { name: 'Sütlaç', category: 'Tatlılar', difficulty: 'Kolay', cookTime: '45 dk', servings: 8, description: 'Geleneksel süt tatlısı.' },
+    { name: 'Kazandibi', category: 'Tatlılar', difficulty: 'Orta', cookTime: '1 saat', servings: 6, description: 'Karamelize süt tatlısı.' },
+    { name: 'Lokma', category: 'Tatlılar', difficulty: 'Orta', cookTime: '30 dk', servings: 20, description: 'Şerbetli hamur tatlısı.' },
+  ];
+
+  // Generate more recipes to reach 400
+  const recipes = [];
+  let id = 1;
+
+  // Add main recipes
+  turkishRecipes.forEach(recipe => {
+    recipes.push({
+      _id: id.toString(),
+      ...recipe,
+      rating: Math.round((Math.random() * 2 + 3) * 10) / 10, // 3-5 rating
+      reviewCount: Math.floor(Math.random() * 200) + 10,
+      image: `https://source.unsplash.com/400x300/?${encodeURIComponent(recipe.name)},turkish,food`,
+      ingredients: ['Malzeme 1', 'Malzeme 2', 'Malzeme 3'], // Sample ingredients
+      instructions: ['Adım 1', 'Adım 2', 'Adım 3'], // Sample instructions
+    });
+    id++;
+  });
+
+  // Generate variations and additional recipes to reach 400
+  const variations = ['Ev Usulü', 'Özel', 'Geleneksel', 'Modern', 'Pratik', 'Lezzetli', 'Nefis', 'Enfes'];
+  const additionalCategories = ['Makarnalar', 'Salatalar', 'İçecekler', 'Aperatifler', 'Kahvaltı', 'Hamur İşleri'];
+  
+  while (recipes.length < 400) {
+    const baseRecipe = turkishRecipes[Math.floor(Math.random() * turkishRecipes.length)];
+    const variation = variations[Math.floor(Math.random() * variations.length)];
+    
+    recipes.push({
+      _id: id.toString(),
+      name: `${variation} ${baseRecipe.name}`,
+      category: Math.random() > 0.3 ? baseRecipe.category : additionalCategories[Math.floor(Math.random() * additionalCategories.length)],
+      difficulty: difficultyLevels[Math.floor(Math.random() * difficultyLevels.length)],
+      cookTime: cookingTimes[Math.floor(Math.random() * cookingTimes.length)],
+      servings: Math.floor(Math.random() * 8) + 2,
+      description: `${baseRecipe.description} ${variation} tarif.`,
+      rating: Math.round((Math.random() * 2 + 3) * 10) / 10,
+      reviewCount: Math.floor(Math.random() * 200) + 5,
+      image: `https://source.unsplash.com/400x300/?${encodeURIComponent(baseRecipe.name)},food,recipe`,
+      ingredients: ['Malzeme 1', 'Malzeme 2', 'Malzeme 3'],
+      instructions: ['Adım 1', 'Adım 2', 'Adım 3'],
+    });
+    id++;
+  }
+
+  return recipes;
+};
+
 export default Menu; 

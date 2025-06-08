@@ -94,6 +94,9 @@ const AdminProducts = () => {
     'Tekstil',
     'Elektronik',
     'Bahçe',
+    'Mobilya',
+    'Yatak Odası',
+    'Oturma Odası'
   ];
 
   useEffect(() => {
@@ -168,17 +171,51 @@ const AdminProducts = () => {
 
   const handleFormChange = (e) => {
     const { name, value, checked } = e.target;
+    
+    // Handle different input types
+    let processedValue = value;
+    
+    if (name === 'price') {
+      // Ensure price is a valid number
+      processedValue = value === '' ? '' : value;
+    } else if (name === 'stock') {
+      // Ensure stock is a valid integer
+      processedValue = value === '' ? '' : value;
+    } else if (name === 'isActive') {
+      processedValue = checked;
+    }
+    
     setForm(prev => ({
       ...prev,
-      [name]: name === 'isActive' ? checked : value
+      [name]: processedValue
     }));
+    
+    // Clear error when user starts typing
+    if (error) {
+      setError('');
+    }
   };
 
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      setError('Lütfen sadece resim dosyası seçin');
+      return;
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      setError('Resim dosyası 5MB\'dan küçük olmalıdır');
+      return;
+    }
+
     setLoading(true);
+    setError('');
+    setSuccess('');
+
     const formData = new FormData();
     formData.append('image', file);
 
@@ -187,13 +224,21 @@ const AdminProducts = () => {
         method: 'POST',
         body: formData,
       });
+      
       const data = await response.json();
-      if (data.url) {
+      
+      if (response.ok && data.url) {
         setForm(prev => ({ ...prev, image: data.url }));
-        setSuccess('Resim başarıyla yüklendi');
+        setSuccess('Ana görsel başarıyla yüklendi');
+        
+        // Clear success message after 3 seconds
+        setTimeout(() => setSuccess(''), 3000);
+      } else {
+        setError(data.error || 'Resim yüklenirken hata oluştu');
       }
     } catch (err) {
-      setError('Resim yüklenirken hata oluştu');
+      console.error('Image upload error:', err);
+      setError('Resim yükleme sırasında ağ hatası: ' + err.message);
     } finally {
       setLoading(false);
     }
@@ -274,21 +319,64 @@ const AdminProducts = () => {
   };
 
   const handleSave = async () => {
-    if (!form.name || !form.category || !form.price || !form.brand || !form.stock) {
-      setError('Lütfen zorunlu alanları doldurun');
+    // Reset previous errors
+    setError('');
+    
+    // Validate required fields
+    if (!form.name.trim()) {
+      setError('Ürün adı zorunludur');
+      return;
+    }
+    
+    if (!form.category) {
+      setError('Kategori seçimi zorunludur');
+      return;
+    }
+    
+    if (!form.price || parseFloat(form.price) <= 0) {
+      setError('Geçerli bir fiyat giriniz');
+      return;
+    }
+    
+    if (form.stock === '' || parseInt(form.stock) < 0) {
+      setError('Geçerli bir stok miktarı giriniz');
+      return;
+    }
+
+    // Check main image for new products
+    if (!selectedProduct && !form.image) {
+      setError('Yeni ürün için ana görsel zorunludur. Lütfen önce ana görsel yükleyin.');
       return;
     }
 
     setLoading(true);
-    setError('');
 
     try {
       const productData = {
-        ...form,
-        features: form.features.split(',').map(f => f.trim()).filter(f => f),
+        name: form.name.trim(),
+        description: form.description.trim() || '',
         price: parseFloat(form.price),
+        category: form.category,
+        brand: form.brand.trim() || '',
         stock: parseInt(form.stock),
+        specifications: form.specifications.trim() || '',
+        isActive: form.isActive,
+        features: form.features 
+          ? form.features.split(',').map(f => f.trim()).filter(f => f) 
+          : []
       };
+
+      // Include main image
+      if (form.image) {
+        productData.image = form.image;
+      }
+
+      // Include additional images
+      if (form.images && form.images.length > 0) {
+        productData.images = form.images;
+      }
+
+      console.log('Sending product data:', productData);
 
       const url = selectedProduct 
         ? `http://localhost:5001/api/products/${selectedProduct._id}`
@@ -296,30 +384,39 @@ const AdminProducts = () => {
       
       const method = selectedProduct ? 'PUT' : 'POST';
 
+      // Get auth token from localStorage
+      const token = localStorage.getItem('token');
+      
       const response = await fetch(url, {
         method,
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
         body: JSON.stringify(productData),
       });
 
-      if (response.ok) {
-        // If images were added/updated, save them separately
-        if (selectedProduct && form.images.length > 0) {
-          await fetch(`http://localhost:5001/api/admin/products/${selectedProduct._id}/images`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ images: form.images }),
-          });
-        }
+      const responseData = await response.json();
 
-        setSuccess(selectedProduct ? 'Ürün güncellendi' : 'Ürün eklendi');
+      if (response.ok) {
+        setSuccess(selectedProduct ? 'Ürün başarıyla güncellendi' : 'Ürün başarıyla eklendi');
         loadProducts();
         handleCloseDialog();
       } else {
-        setError('Ürün kaydedilirken hata oluştu');
+        console.error('Server response error:', responseData);
+        
+        if (responseData.validationErrors) {
+          const errorMessages = responseData.validationErrors.map(err => 
+            `${err.field}: ${err.message}`
+          ).join(', ');
+          setError(`Doğrulama hatası: ${errorMessages}`);
+        } else {
+          setError(responseData.error || 'Ürün kaydedilirken hata oluştu');
+        }
       }
     } catch (err) {
-      setError('İşlem sırasında hata oluştu');
+      console.error('Network error:', err);
+      setError('Ağ bağlantı hatası: ' + err.message);
     } finally {
       setLoading(false);
     }
@@ -361,8 +458,13 @@ const AdminProducts = () => {
 
   const handleDelete = async () => {
     try {
+      const token = localStorage.getItem('token');
+      
       await fetch(`http://localhost:5001/api/products/${deleteId}`, {
         method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
       });
       setSuccess('Ürün silindi');
       setDeleteDialogOpen(false);
@@ -613,7 +715,14 @@ const AdminProducts = () => {
                   value={form.price}
                   onChange={handleFormChange}
                   margin="normal"
-                  InputProps={{ startAdornment: '₺' }}
+                  inputProps={{ 
+                    min: 0, 
+                    step: 0.01,
+                    placeholder: "0.00"
+                  }}
+                  InputProps={{ 
+                    startAdornment: '₺',
+                  }}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -625,6 +734,11 @@ const AdminProducts = () => {
                   value={form.stock}
                   onChange={handleFormChange}
                   margin="normal"
+                  inputProps={{ 
+                    min: 0, 
+                    step: 1,
+                    placeholder: "0"
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -649,6 +763,56 @@ const AdminProducts = () => {
                   margin="normal"
                   placeholder="Su geçirmez, Dayanıklı, Modern tasarım"
                 />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="subtitle1" gutterBottom sx={{ mt: 2 }}>
+                  Ana Görsel *
+                </Typography>
+                <Box sx={{ mb: 2 }}>
+                  <input
+                    accept="image/*"
+                    style={{ display: 'none' }}
+                    id="main-image-upload"
+                    type="file"
+                    onChange={handleImageUpload}
+                  />
+                  <label htmlFor="main-image-upload">
+                    <Button
+                      variant="outlined"
+                      component="span"
+                      startIcon={<UploadIcon />}
+                      disabled={loading}
+                      fullWidth
+                      sx={{ mb: 2 }}
+                    >
+                      {loading ? 'Yükleniyor...' : 'Ana Görsel Yükle'}
+                    </Button>
+                  </label>
+                  
+                  {form.image && (
+                    <Box sx={{ textAlign: 'center' }}>
+                      <img
+                        src={form.image}
+                        alt="Ana görsel"
+                        style={{
+                          maxWidth: '100%',
+                          maxHeight: 200,
+                          borderRadius: 8,
+                          border: '1px solid #e0e0e0'
+                        }}
+                      />
+                      <Typography variant="caption" display="block" sx={{ mt: 1, color: 'success.main' }}>
+                        ✓ Ana görsel yüklendi
+                      </Typography>
+                    </Box>
+                  )}
+                  
+                  {!form.image && !selectedProduct && (
+                    <Typography variant="caption" color="error" display="block">
+                      Yeni ürün için ana görsel zorunludur
+                    </Typography>
+                  )}
+                </Box>
               </Grid>
               <Grid item xs={12}>
                 <FormControlLabel

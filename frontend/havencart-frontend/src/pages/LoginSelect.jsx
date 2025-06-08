@@ -66,19 +66,22 @@ const LoginSelect = () => {
             </Typography>
           </Box>
 
-          <Grid container spacing={4} justifyContent="center">
-            <Grid item xs={12} sm={6} md={5}>
+          <Grid container spacing={4} justifyContent="center" alignItems="stretch">
+            <Grid item xs={12} sm={6} md={5} sx={{ display: 'flex' }}>
               <Card
                 sx={{
                   height: '100%',
+                  width: '100%',
                   cursor: 'pointer',
                   transition: 'all 0.3s ease',
                   border: '2px solid transparent',
                   borderRadius: 3,
+                  display: 'flex',
+                  flexDirection: 'column',
                   '&:hover': {
                     transform: 'translateY(-8px)',
                     boxShadow: '0 16px 32px rgba(0,0,0,0.2)',
-                    border: '2px solid #2196F3',
+                    border: '2px solid #667eea',
                   },
                 }}
                 onClick={() => navigate('/admin/login')}
@@ -90,6 +93,10 @@ const LoginSelect = () => {
                     background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
                     color: 'white',
                     borderRadius: 3,
+                    flex: 1,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
                   }}
                 >
                   <AdminIcon sx={{ fontSize: 80, mb: 3, opacity: 0.9 }} />
@@ -103,18 +110,21 @@ const LoginSelect = () => {
               </Card>
             </Grid>
 
-            <Grid item xs={12} sm={6} md={5}>
+            <Grid item xs={12} sm={6} md={5} sx={{ display: 'flex' }}>
               <Card
                 sx={{
                   height: '100%',
+                  width: '100%',
                   cursor: 'pointer',
                   transition: 'all 0.3s ease',
                   border: '2px solid transparent',
                   borderRadius: 3,
+                  display: 'flex',
+                  flexDirection: 'column',
                   '&:hover': {
                     transform: 'translateY(-8px)',
                     boxShadow: '0 16px 32px rgba(0,0,0,0.2)',
-                    border: '2px solid #4CAF50',
+                    border: '2px solid #667eea',
                   },
                 }}
                 onClick={() => navigate('/user/login')}
@@ -123,9 +133,13 @@ const LoginSelect = () => {
                   sx={{
                     textAlign: 'center',
                     py: 6,
-                    background: 'linear-gradient(135deg, #4CAF50 0%, #45a049 100%)',
+                    background: 'linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%)',
                     color: 'white',
                     borderRadius: 3,
+                    flex: 1,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
                   }}
                 >
                   <UserIcon sx={{ fontSize: 80, mb: 3, opacity: 0.9 }} />

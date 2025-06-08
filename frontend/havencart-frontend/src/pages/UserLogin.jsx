@@ -70,22 +70,21 @@ const UserLogin = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(loginForm),
+        body: JSON.stringify({ email: loginForm.email, password: loginForm.password }),
       });
 
       const data = await response.json();
 
-      if (!response.ok) {
-        throw new Error(data.error || 'Giriş başarısız');
+      if (response.ok) {
+        // Store token and user data
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        localStorage.setItem('userRole', 'user');
+        
+        navigate('/home');
+      } else {
+        setError(data.error || 'Giriş başarısız');
       }
-
-      // Store token and user info
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('user', JSON.stringify(data.user));
-      localStorage.setItem('userRole', 'user');
-
-      // Redirect to home page
-      navigate('/home');
     } catch (err) {
       setError(err.message);
     } finally {

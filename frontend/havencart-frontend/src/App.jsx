@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import { MenuProvider } from './pages/Menu';
+import { ProductsProvider } from './contexts/ProductsContext';
 
 // Pages
 import Home from './pages/Home';
@@ -16,6 +16,8 @@ import Contact from './pages/Contact';
 import Menu from './pages/Menu';
 import RecipeDetail from './pages/RecipeDetail';
 import AmazonAffiliate from './pages/AmazonAffiliate';
+import Books from './pages/Books';
+import BookDetail from './pages/BookDetail';
 
 // User Pages
 import Profile from './pages/Profile';
@@ -38,6 +40,7 @@ import AdminAnalytics from './pages/AdminAnalytics';
 import AdminContacts from './pages/AdminContacts';
 import AdminProfile from './pages/AdminProfile';
 import AdminSettings from './pages/AdminSettings';
+import AdminBooks from './pages/AdminBooks';
 
 // Layout
 import Navbar from './components/Navbar';
@@ -62,7 +65,12 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Router>
+      <Router
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
         <Routes>
           {/* Auth Routes - No Navbar/Footer for clean login experience */}
           <Route path="/" element={<LoginSelect />} />
@@ -124,30 +132,34 @@ function App() {
               <AdminSettings />
             </>
           } />
+          <Route path="/admin/books" element={
+            <>
+              <AdminNavbar />
+              <AdminBooks />
+            </>
+          } />
           
           {/* Main User App Routes - With Navbar/Footer */}
           <Route path="/home" element={
-            <>
+            <ProductsProvider>
               <Navbar />
               <Home />
               <Footer />
-            </>
+            </ProductsProvider>
           } />
           <Route path="/products" element={
-            <>
+            <ProductsProvider>
               <Navbar />
-              <MenuProvider>
-                <Menu />
-              </MenuProvider>
+              <Products />
               <Footer />
-            </>
+            </ProductsProvider>
           } />
           <Route path="/product/:id" element={
-            <>
+            <ProductsProvider>
               <Navbar />
               <ProductDetail />
               <Footer />
-            </>
+            </ProductsProvider>
           } />
           <Route path="/cart" element={
             <>
@@ -217,18 +229,14 @@ function App() {
           <Route path="/menu" element={
             <>
               <Navbar />
-              <MenuProvider>
-                <Menu />
-              </MenuProvider>
+              <Menu />
               <Footer />
             </>
           } />
           <Route path="/recipe/:id" element={
             <>
               <Navbar />
-              <MenuProvider>
-                <RecipeDetail />
-              </MenuProvider>
+              <RecipeDetail />
               <Footer />
             </>
           } />
@@ -236,6 +244,20 @@ function App() {
             <>
               <Navbar />
               <AmazonAffiliate />
+              <Footer />
+            </>
+          } />
+          <Route path="/books" element={
+            <>
+              <Navbar />
+              <Books />
+              <Footer />
+            </>
+          } />
+          <Route path="/book/:id" element={
+            <>
+              <Navbar />
+              <BookDetail />
               <Footer />
             </>
           } />

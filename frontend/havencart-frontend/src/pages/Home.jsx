@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { 
   Container, 
   Typography, 
@@ -26,9 +26,11 @@ import {
   MoneyOff as MoneyOffIcon,
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
+import { ProductsContext } from '../contexts/ProductsContext';
 
 const Home = () => {
   const navigate = useNavigate();
+  const { products, loading } = useContext(ProductsContext);
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [userFavorites, setUserFavorites] = useState([]);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
@@ -43,22 +45,17 @@ const Home = () => {
   };
 
   useEffect(() => {
-    loadFeaturedProducts();
+    if (products && products.length > 0) {
+      // Take first 6 products as featured
+      setFeaturedProducts(products.slice(0, 6));
+    }
+  }, [products]);
+
+  useEffect(() => {
     if (isLoggedIn && getUserId()) {
       loadUserFavorites();
     }
   }, [isLoggedIn]);
-
-  const loadFeaturedProducts = async () => {
-    try {
-      const response = await fetch('http://localhost:5001/api/products');
-      const products = await response.json();
-      // Take first 6 products as featured
-      setFeaturedProducts(products.slice(0, 6));
-    } catch (error) {
-      console.error('Error loading products:', error);
-    }
-  };
 
   const loadUserFavorites = async () => {
     try {

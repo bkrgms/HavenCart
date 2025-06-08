@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Container,
   Grid,
@@ -35,12 +35,87 @@ import {
 import { useParams } from 'react-router-dom';
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
-import { MenuContext } from './Menu';
 
 const RecipeDetail = () => {
   const { id } = useParams();
-  const { menuItems } = useContext(MenuContext);
-  const recipe = menuItems.find((item) => String(item._id) === String(id));
+  const [recipe, setRecipe] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    loadRecipe();
+  }, [id]);
+
+  const loadRecipe = async () => {
+    try {
+      const response = await fetch(`http://localhost:5001/api/recipes/${id}`);
+      if (response.ok) {
+        const data = await response.json();
+        setRecipe(data);
+      } else {
+        // Fallback to sample data if API fails
+        setRecipe(generateSampleRecipe(id));
+      }
+    } catch (error) {
+      console.error('Error loading recipe:', error);
+      setRecipe(generateSampleRecipe(id));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const generateSampleRecipe = (recipeId) => {
+    return {
+      _id: recipeId,
+      name: 'Mercimek Çorbası',
+      description: 'Geleneksel Türk mutfağının vazgeçilmez çorbası. Besleyici ve lezzetli mercimek çorbası tarifi.',
+      category: 'Çorbalar',
+      difficulty: 'Kolay',
+      cookTime: '30 dk',
+      prepTime: '15 dk',
+      servings: 4,
+      rating: 4.5,
+      reviewCount: 127,
+      image: 'https://source.unsplash.com/800x600/?mercimek,çorba,soup',
+      ingredients: [
+        { name: 'Kırmızı mercimek', amount: '1', unit: 'su bardağı' },
+        { name: 'Soğan', amount: '1', unit: 'adet' },
+        { name: 'Havuç', amount: '1', unit: 'adet' },
+        { name: 'Patates', amount: '1', unit: 'adet' },
+        { name: 'Domates salçası', amount: '1', unit: 'yemek kaşığı' },
+        { name: 'Tereyağı', amount: '2', unit: 'yemek kaşığı' },
+        { name: 'Su', amount: '5', unit: 'su bardağı' },
+        { name: 'Tuz', amount: '1', unit: 'tatlı kaşığı' },
+        { name: 'Karabiber', amount: '1', unit: 'çimdik' },
+        { name: 'Limon', amount: '1/2', unit: 'adet' }
+      ],
+      instructions: [
+        'Soğanı küçük küçük doğrayın ve tereyağında kavurun.',
+        'Havuç ve patatesi küçük küpler halinde doğrayın.',
+        'Soğanlar pembe renk aldığında havuç ve patatesi ekleyin.',
+        'Domates salçasını ekleyip 2-3 dakika kavurun.',
+        'Yıkanmış mercimekleri ekleyin ve karıştırın.',
+        'Sıcak suyu ekleyip kaynamaya bırakın.',
+        'Sebzeler yumuşayıncaya kadar 20-25 dakika pişirin.',
+        'Blender ile çorbanın kıvamını ayarlayın.',
+        'Tuz ve baharatları ekleyip 5 dakika daha pişirin.',
+        'Servis ederken limon sıkın.'
+      ],
+      tips: [
+        'Çorbanın kıvamını su miktarıyla ayarlayabilirsiniz.',
+        'Üzerine tereyağı ve pul biber serpiştirerek servis edebilirsiniz.',
+        'Çorbayı blenderde çekerken dikkatli olun, sıcak olabilir.',
+        'Limon suyu çorbanın tadını daha da lezzetli yapar.'
+      ]
+    };
+  };
+
+  if (loading) {
+    return (
+      <Container maxWidth="md" sx={{ py: 8 }}>
+        <Typography variant="h6" textAlign="center">Yükleniyor...</Typography>
+      </Container>
+    );
+  }
 
   if (!recipe) {
     return (

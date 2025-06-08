@@ -42,17 +42,37 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Product'
     }],
+    bookFavorites: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Book'
+    }],
+    recipeFavorites: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Recipe'
+    }],
+    orders: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Order'
+    }],
     cart: [{
-        product: {
+        productId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Product',
             required: true
         },
         quantity: {
             type: Number,
-            required: true,
-            min: 1,
-            default: 1
+            default: 1,
+            min: 1
+        },
+        type: {
+            type: String,
+            enum: ['product', 'book', 'recipe'],
+            default: 'product'
+        },
+        addedAt: {
+            type: Date,
+            default: Date.now
         }
     }]
 }, {

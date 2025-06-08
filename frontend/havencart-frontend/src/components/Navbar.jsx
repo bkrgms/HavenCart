@@ -23,6 +23,8 @@ import {
   Inventory as ProductsIcon,
   Settings as SettingsIcon,
   Favorite as FavoriteIcon,
+  MenuBook as MenuBookIcon,
+  Restaurant as RestaurantIcon,
 } from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
 
@@ -62,17 +64,19 @@ const Navbar = () => {
       }
       
       console.log('Loading cart count for user ID:', userId);
+      
+      // Backend'den sepet sayısını al
       const response = await fetch(`http://localhost:5001/api/user/cart/${userId}`);
       if (response.ok) {
         const cartItems = await response.json();
-        const totalCount = cartItems.reduce((total, item) => total + item.quantity, 0);
+        // Toplam ürün sayısını hesapla
+        const totalCount = cartItems.reduce((total, item) => total + (item.quantity || 0), 0);
         setCartCount(totalCount);
       } else {
-        console.error('Failed to load cart. Status:', response.status);
-        const errorText = await response.text();
-        console.error('Error response:', errorText);
+        console.error('Failed to load cart count. Status:', response.status);
         setCartCount(0);
       }
+      
     } catch (error) {
       console.error('Error loading cart count:', error);
       setCartCount(0);
@@ -121,6 +125,16 @@ const Navbar = () => {
       title: 'Ürünler',
       icon: <ProductsIcon />,
       path: '/products',
+    },
+    {
+      title: 'Yemek Menüsü',
+      icon: <RestaurantIcon />,
+      path: '/menu',
+    },
+    {
+      title: 'Kitaplar',
+      icon: <MenuBookIcon />,
+      path: '/books',
     },
     {
       title: 'İletişim',

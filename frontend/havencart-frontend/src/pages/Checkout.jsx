@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Container,
   Grid,
@@ -16,41 +16,53 @@ import {
   RadioGroup,
   FormControl,
   FormLabel,
+  Divider,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemAvatar,
+  Avatar,
+  Alert,
+  Snackbar,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { loadStripe } from '@stripe/stripe-js';
-import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
 
-// Stripe public key - Test mode
-const stripePromise = loadStripe('pk_test_51XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX');
+// Stripe imports (optional)
+let stripePromise = null;
+let Elements = null;
+let CardElement = null;
+let useStripe = null;
+let useElements = null;
+let stripeAvailable = false;
+
+// Try to import Stripe
+try {
+  import('@stripe/stripe-js').then(stripeModule => {
+    stripePromise = stripeModule.loadStripe('pk_test_51XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX');
+  });
+  
+  import('@stripe/react-stripe-js').then(stripeReactModule => {
+    Elements = stripeReactModule.Elements;
+    CardElement = stripeReactModule.CardElement;
+    useStripe = stripeReactModule.useStripe;
+    useElements = stripeReactModule.useElements;
+    stripeAvailable = true;
+  });
+} catch (error) {
+  console.warn('Stripe yüklenemedi:', error);
+  stripeAvailable = false;
+}
 
 const steps = ['Teslimat Bilgileri', 'Ödeme Yöntemi', 'Sipariş Onayı'];
 
-// Stripe Card Element Component
+// Simplified Stripe Card Element Component
 const StripeCardElement = () => {
-  const stripe = useStripe();
-  const elements = useElements();
-
   return (
-    <Box sx={{ mt: 2 }}>
-      <CardElement
-        options={{
-          style: {
-            base: {
-              fontSize: '16px',
-              color: '#424770',
-              '::placeholder': {
-                color: '#aab7c4',
-              },
-            },
-            invalid: {
-              color: '#9e2146',
-            },
-          },
-        }}
-      />
-    </Box>
+    <Alert severity="info" sx={{ mt: 2 }}>
+      Kredi kartı ödemeleri geliştirme aşamasında. 
+      Şimdilik nakit ödeme veya havale seçeneklerini kullanabilirsiniz.
+    </Alert>
   );
 };
 

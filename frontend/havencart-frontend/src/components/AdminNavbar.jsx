@@ -23,6 +23,7 @@ import {
   Analytics as AnalyticsIcon,
   Notifications as NotificationsIcon,
   ShoppingCart as CartIcon,
+  MenuBook as BookIcon,
 } from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
 
@@ -58,6 +59,11 @@ const AdminNavbar = () => {
       title: 'Ürünler',
       icon: <ProductsIcon />,
       path: '/admin/products',
+    },
+    {
+      title: 'Kitaplar',
+      icon: <BookIcon />,
+      path: '/admin/books',
     },
     {
       title: 'Kullanıcılar',

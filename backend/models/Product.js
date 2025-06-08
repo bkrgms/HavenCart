@@ -8,7 +8,7 @@ const productSchema = new mongoose.Schema({
     },
     description: {
         type: String,
-        required: true
+        default: ''
     },
     price: {
         type: Number,
@@ -20,7 +20,8 @@ const productSchema = new mongoose.Schema({
         required: true
     },
     brand: {
-        type: String
+        type: String,
+        default: ''
     },
     stock: {
         type: Number,
@@ -47,6 +48,14 @@ const productSchema = new mongoose.Schema({
         }
     }],
     features: [String],
+    specifications: {
+        type: String,
+        default: ''
+    },
+    isActive: {
+        type: Boolean,
+        default: true
+    },
     createdAt: {
         type: Date,
         default: Date.now
@@ -79,6 +88,12 @@ const productSchema = new mongoose.Schema({
         type: Number,
         default: 0
     }
+});
+
+// Pre-save middleware to update timestamps
+productSchema.pre('save', function(next) {
+    this.updatedAt = new Date();
+    next();
 });
 
 // Update average rating when a new review is added
