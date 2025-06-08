@@ -9,15 +9,22 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@stripe/stripe-js": "^7.3.0",
-    "axios": "^1.9.0",
-    "vue": "^3.5.13",
-    "vue-paypal-checkout": "^3.2.0",
-    "vue-stripe": "^0.1.52"
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.15.10",
+    "@mui/material": "^5.15.10",
+    "@paypal/react-paypal-js": "^8.8.3",
+    "@stripe/react-stripe-js": "^3.7.0",
+    "@stripe/stripe-js": "^2.4.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "axios": "^1.6.7",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^3.0.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.22.1"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^5.2.3",
-    "vite": "^6.2.4",
-    "vite-plugin-vue-devtools": "^7.7.2"
+    "vite": "^5.1.3"
   }
 }

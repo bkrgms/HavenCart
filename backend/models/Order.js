@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 
 const orderSchema = new mongoose.Schema({
+    orderNumber: {
+        type: String,
+        required: true,
+        unique: true
+    },
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
@@ -22,68 +27,31 @@ const orderSchema = new mongoose.Schema({
             required: true
         }
     }],
-    shippingAddress: {
-        street: {
-            type: String,
-            required: true
-        },
-        city: {
-            type: String,
-            required: true
-        },
-        state: {
-            type: String,
-            required: true
-        },
-        zipCode: {
-            type: String,
-            required: true
-        },
-        country: {
-            type: String,
-            required: true
-        }
-    },
-    paymentMethod: {
-        type: String,
-        enum: ['stripe', 'paypal'],
-        required: true
-    },
-    paymentResult: {
-        id: String,
-        status: String,
-        update_time: String,
-        email_address: String
-    },
-    totalPrice: {
+    totalAmount: {
         type: Number,
         required: true
     },
     status: {
         type: String,
-        enum: ['pending', 'processing', 'shipped', 'delivered', 'cancelled'],
+        enum: ['pending', 'confirmed', 'shipping', 'delivered', 'cancelled'],
         default: 'pending'
     },
-    isPaid: {
-        type: Boolean,
-        default: false
+    shippingAddress: {
+        name: String,
+        address: String,
+        city: String,
+        postalCode: String,
+        phone: String
     },
-    paidAt: {
-        type: Date
+    paymentMethod: {
+        type: String,
+        enum: ['card', 'transfer', 'cash'],
+        default: 'card'
     },
-    isDelivered: {
-        type: Boolean,
-        default: false
-    },
-    deliveredAt: {
-        type: Date
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now
-    }
+    trackingNumber: String,
+    notes: String
+}, {
+    timestamps: true
 });
 
-const Order = mongoose.model('Order', orderSchema);
-
-module.exports = Order; 
+module.exports = mongoose.model('Order', orderSchema); 

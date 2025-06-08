@@ -1,0 +1,758 @@
+[
+  {
+    "name": "Pamuk Örtü",
+    "description": "Pamuk Örtü, evinizin dekorasyonunu tamamlayacak kaliteli bir üründür. Modern tasarımı ile her ortama uyum sağlar. Dayanıklı malzemesi sayesinde uzun yıllar kullanabilirsiniz. tekstil kategorisinde öne çıkan bu ürün, hem fonksiyonel hem de estetik açıdan mükemmeldir.",
+    "price": 639.3516949589748,
+    "category": "Tekstil",
+    "brand": "Philips",
+    "stock": 107,
+    "image": "https://picsum.photos/seed/carpet-359/400/300",
+    "images": [
+      {
+        "url": "https://picsum.photos/seed/textile-359-0/400/300",
+        "order": 0,
+        "isPrimary": true
+      },
+      {
+        "url": "https://picsum.photos/seed/textile-359-1/400/300",
+        "order": 1,
+        "isPrimary": false
+      },
+      {
+        "url": "https://picsum.photos/seed/curtain-359-2/400/300",
+        "order": 2,
+        "isPrimary": false
+      }
+    ],
+    "features": [
+      "Çevre dostu",
+      "Kolay montaj",
+      "Doğal malzeme",
+      "Antibakteriyel yüzey"
+    ],
+    "specifications": "Malzeme: Kumaş, \nBoyutlar: 126x39x82 cm,\nAğırlık: 36.18576496466697 kg,\nRenk: Sarı",
+    "isActive": true,
+    "averageRating": 4.298508323612461,
+    "totalReviews": 49
+  },
+  {
+    "name": "Makyaj Masası",
+    "description": "Makyaj Masası, evinizin dekorasyonunu tamamlayacak kaliteli bir üründür. Modern tasarımı ile her ortama uyum sağlar. Dayanıklı malzemesi sayesinde uzun yıllar kullanabilirsiniz. yatak odası kategorisinde öne çıkan bu ürün, hem fonksiyonel hem de estetik açıdan mükemmeldir.",
+    "price": 3770.4791047535286,
+    "category": "Yatak Odası",
+    "brand": "Samsung",
+    "stock": 125,
+    "image": "https://picsum.photos/seed/bedding-852/400/300",
+    "images": [
+      {
+        "url": "https://picsum.photos/seed/bed-852-0/400/300",
+        "order": 0,
+        "isPrimary": true
+      },
+      {
+        "url": "https://picsum.photos/seed/mattress-852-1/400/300",
+        "order": 1,
+        "isPrimary": false
+      },
+      {
+        "url": "https://picsum.photos/seed/bedroom-852-2/400/300",
+        "order": 2,
+        "isPrimary": false
+      },
+      {
+        "url": "https://picsum.photos/seed/pillow-852-3/400/300",
+        "order": 3,
+        "isPrimary": false
+      }
+    ],
+    "features": [
+      "Alerjik olmayan",
+      "UV korumalı",
+      "El yapımı",
+      "Kolay montaj"
+    ],
+    "specifications": "Malzeme: Ahşap, \nBoyutlar: 122x11x48 cm,\nAğırlık: 22.48545150573359 kg,\nRenk: Sarı",
+    "isActive": true,
+    "averageRating": 3.210327676661609,
+    "totalReviews": 112
+  },
+  {
+    "name": "Dekoratif Yastık Takımı",
+    "description": "Dekoratif Yastık Takımı, evinizin dekorasyonunu tamamlayacak kaliteli bir üründür. Modern tasarımı ile her ortama uyum sağlar. Dayanıklı malzemesi sayesinde uzun yıllar kullanabilirsiniz. oturma odası kategorisinde öne çıkan bu ürün, hem fonksiyonel hem de estetik açıdan mükemmeldir.",
+    "price": 1280.3839664907255,
+    "category": "Oturma Odası",
+    "brand": "Fakir",
+    "stock": 68,
+    "image": "https://picsum.photos/seed/sofa-863/400/300",
+    "images": [
+      {
+        "url": "https://picsum.photos/seed/armchair-863-0/400/300",
+        "order": 0,
+        "isPrimary": true
+      },
+      {
+        "url": "https://picsum.photos/seed/coffee-table-863-1/400/300",
+        "order": 1,
+        "isPrimary": false
+      }
+    ],
+    "features": [
+      "Doğal malzeme",
+      "Dayanıklı malzeme",
+      "Kolay temizlik",
+      "El yapımı",
+      "Kompakt tasarım",
+      "Antibakteriyel yüzey"
+    ],
+    "specifications": "Malzeme: Kumaş, \nBoyutlar: 84x20x7 cm,\nAğırlık: 15.61715544059161 kg,\nRenk: Yeşil",
+    "isActive": true,
+    "averageRating": 3.634629020435593,
+    "totalReviews": 430
+  },
+  {
+    "name": "Modern Avize",
+    "description": "Modern Avize, evinizin dekorasyonunu tamamlayacak kaliteli bir üründür. Modern tasarımı ile her ortama uyum sağlar. Dayanıklı malzemesi sayesinde uzun yıllar kullanabilirsiniz. oturma odası kategorisinde öne çıkan bu ürün, hem fonksiyonel hem de estetik açıdan mükemmeldir.",
+    "price": 5424.46680980865,
+    "category": "Oturma Odası",
+    "brand": "Fakir",
+    "stock": 40,
+    "image": "https://picsum.photos/seed/coffee-table-789/400/300",
+    "images": [
+      {
+        "url": "https://picsum.photos/seed/coffee-table-789-0/400/300",
+        "order": 0,
+        "isPrimary": true
+      },
+      {
+        "url": "https://picsum.photos/seed/bookshelf-789-1/400/300",
+        "order": 1,
+        "isPrimary": false
+      },
+      {
+        "url": "https://picsum.photos/seed/bookshelf-789-2/400/300",
+        "order": 2,
+        "isPrimary": false
+      },
+      {
+        "url": "https://picsum.photos/seed/armchair-789-3/400/300",
+        "order": 3,
+        "isPrimary": false
+      }
+    ],
+    "features": [
+      "Doğal malzeme",
+      "Enerji tasarruflu",
+      "Alerjik olmayan"
+    ],
+    "specifications": "Malzeme: Plastik, \nBoyutlar: 160x130x94 cm,\nAğırlık: 32.20989872166696 kg,\nRenk: Kahverengi",
+    "isActive": true,
+    "averageRating": 3.72208925158169,
+    "totalReviews": 30
+  },
+  {
+    "name": "Vintage Kilim",
+    "description": "Vintage Kilim, evinizin dekorasyonunu tamamlayacak kaliteli bir üründür. Modern tasarımı ile her ortama uyum sağlar. Dayanıklı malzemesi sayesinde uzun yıllar kullanabilirsiniz. tekstil kategorisinde öne çıkan bu ürün, hem fonksiyonel hem de estetik açıdan mükemmeldir.",
+    "price": 54.11773783554386,
+    "category": "Tekstil",
+    "brand": "English Home",
+    "stock": 127,
+    "image": "https://picsum.photos/seed/textile-156/400/300",
+    "images": [
+      {
+        "url": "https://picsum.photos/seed/curtain-156-0/400/300",
+        "order": 0,
+        "isPrimary": true
+      },
+      {
+        "url": "https://picsum.photos/seed/fabric-156-1/400/300",
+        "order": 1,
+        "isPrimary": false
+      },
+      {
+        "url": "https://picsum.photos/seed/textile-156-2/400/300",
+        "order": 2,
+        "isPrimary": false
+      }
+    ],
+    "features": [
+      "Doğal malzeme",
+      "Kolay montaj",
+      "Kolay temizlik",
+      "Isı yalıtımı",
+      "Ses yalıtımı",
+      "İthal kalite"
+    ],
+    "specifications": "Malzeme: Ahşap, \nBoyutlar: 24x139x72 cm,\nAğırlık: 33.061054804973054 kg,\nRenk: Mavi",
+    "isActive": true,
+    "averageRating": 3.4567198738383076,
+    "totalReviews": 17
+  },
+  {
+    "name": "Tv Ünitesi",
+    "description": "Tv Ünitesi, evinizin dekorasyonunu tamamlayacak kaliteli bir üründür. Modern tasarımı ile her ortama uyum sağlar. Dayanıklı malzemesi sayesinde uzun yıllar kullanabilirsiniz. mobilya kategorisinde öne çıkan bu ürün, hem fonksiyonel hem de estetik açıdan mükemmeldir.",
+    "price": 730.4255196328355,
+    "category": "Mobilya",
+    "brand": "English Home",
+    "stock": 33,
+    "image": "https://picsum.photos/seed/sofa-885/400/300",
+    "images": [
+      {
+        "url": "https://picsum.photos/seed/sofa-885-0/400/300",
+        "order": 0,
+        "isPrimary": true
+      },
+      {
+        "url": "https://picsum.photos/seed/cabinet-885-1/400/300",
+        "order": 1,
+        "isPrimary": false
+      },
+      {
+        "url": "https://picsum.photos/seed/chair-885-2/400/300",
+        "order": 2,
+        "isPrimary": false
+      },
+      {
+        "url": "https://picsum.photos/seed/furniture-885-3/400/300",
+        "order": 3,
+        "isPrimary": false
+      }
+    ],
+    "features": [
+      "UV korumalı",
+      "Isı yalıtımı",
+      "Ekonomik fiyat",
+      "Ses yalıtımı",
+      "Kompakt tasarım",
+      "Doğal malzeme"
+    ],
+    "specifications": "Malzeme: Metal, \nBoyutlar: 79x84x90 cm,\nAğırlık: 13.061610335033347 kg,\nRenk: Yeşil",
+    "isActive": true,
+    "averageRating": 4.844746009238213,
+    "totalReviews": 76
+  },
+  {
+    "name": "Antik Halı",
+    "description": "Antik Halı, evinizin dekorasyonunu tamamlayacak kaliteli bir üründür. Modern tasarımı ile her ortama uyum sağlar. Dayanıklı malzemesi sayesinde uzun yıllar kullanabilirsiniz. tekstil kategorisinde öne çıkan bu ürün, hem fonksiyonel hem de estetik açıdan mükemmeldir.",
+    "price": 817.0647182486642,
+    "category": "Tekstil",
+    "brand": "Koçtaş",
+    "stock": 77,
+    "image": "https://picsum.photos/seed/fabric-890/400/300",
+    "images": [
+      {
+        "url": "https://picsum.photos/seed/curtain-890-0/400/300",
+        "order": 0,
+        "isPrimary": true
+      },
+      {
+        "url": "https://picsum.photos/seed/fabric-890-1/400/300",
+        "order": 1,
+        "isPrimary": false
+      },
+      {
+        "url": "https://picsum.photos/seed/curtain-890-2/400/300",
+        "order": 2,
+        "isPrimary": false
+      }
+    ],
+    "features": [
+      "Şık görünüm",
+      "Isı yalıtımı",
+      "2 yıl garantili",
+      "Çok amaçlı kullanım",
+      "Çevre dostu"
+    ],
+    "specifications": "Malzeme: Cam, \nBoyutlar: 157x162x87 cm,\nAğırlık: 13.143782280045055 kg,\nRenk: Beyaz",
+    "isActive": true,
+    "averageRating": 3.3493187416791566,
+    "totalReviews": 401
+  },
+  {
+    "name": "Yatak Odası Pufu",
+    "description": "Yatak Odası Pufu, evinizin dekorasyonunu tamamlayacak kaliteli bir üründür. Modern tasarımı ile her ortama uyum sağlar. Dayanıklı malzemesi sayesinde uzun yıllar kullanabilirsiniz. yatak odası kategorisinde öne çıkan bu ürün, hem fonksiyonel hem de estetik açıdan mükemmeldir.",
+    "price": 1564.1384171544255,
+    "category": "Yatak Odası",
+    "brand": "Zara Home",
+    "stock": 94,
+    "image": "https://picsum.photos/seed/bedding-485/400/300",
+    "images": [
+      {
+        "url": "https://picsum.photos/seed/mattress-485-0/400/300",
+        "order": 0,
+        "isPrimary": true
+      },
+      {
+        "url": "https://picsum.photos/seed/mattress-485-1/400/300",
+        "order": 1,
+        "isPrimary": false
+      },
+      {
+        "url": "https://picsum.photos/seed/pillow-485-2/400/300",
+        "order": 2,
+        "isPrimary": false
+      },
+      {
+        "url": "https://picsum.photos/seed/bedding-485-3/400/300",
+        "order": 3,
+        "isPrimary": false
+      }
+    ],
+    "features": [
+      "Antibakteriyel yüzey",
+      "Enerji tasarruflu",
+      "Dayanıklı malzeme",
+      "Kolay temizlik"
+    ],
+    "specifications": "Malzeme: Deri, \nBoyutlar: 18x65x76 cm,\nAğırlık: 29.75762061108059 kg,\nRenk: Kırmızı",
+    "isActive": true,
+    "averageRating": 4.9974855250437695,
+    "totalReviews": 41
+  },
+  {
+    "name": "Porselen Tabak",
+    "description": "Porselen Tabak, evinizin dekorasyonunu tamamlayacak kaliteli bir üründür. Modern tasarımı ile her ortama uyum sağlar. Dayanıklı malzemesi sayesinde uzun yıllar kullanabilirsiniz. mutfak kategorisinde öne çıkan bu ürün, hem fonksiyonel hem de estetik açıdan mükemmeldir.",
+    "price": 161.0951317076091,
+    "category": "Mutfak",
+    "brand": "Samsung",
+    "stock": 123,
+    "image": "https://picsum.photos/seed/kitchen-31/400/300",
+    "images": [
+      {
+        "url": "https://picsum.photos/seed/appliance-31-0/400/300",
+        "order": 0,
+        "isPrimary": true
+      },
+      {
+        "url": "https://picsum.photos/seed/kitchen-31-1/400/300",
+        "order": 1,
+        "isPrimary": false
+      },
+      {
+        "url": "https://picsum.photos/seed/kitchen-31-2/400/300",
+        "order": 2,
+        "isPrimary": false
+      }
+    ],
+    "features": [
+      "Dayanıklı malzeme",
+      "Antibakteriyel yüzey",
+      "Alerjik olmayan",
+      "Çok amaçlı kullanım",
+      "Ses yalıtımı"
+    ],
+    "specifications": "Malzeme: Seramik, \nBoyutlar: 172x93x76 cm,\nAğırlık: 20.225984276115344 kg,\nRenk: Mor",
+    "isActive": true,
+    "averageRating": 4.698058435273343,
+    "totalReviews": 457
+  },
+  {
+    "name": "Spot Aydınlatma",
+    "description": "Spot Aydınlatma, evinizin dekorasyonunu tamamlayacak kaliteli bir üründür. Modern tasarımı ile her ortama uyum sağlar. Dayanıklı malzemesi sayesinde uzun yıllar kullanabilirsiniz. aydınlatma kategorisinde öne çıkan bu ürün, hem fonksiyonel hem de estetik açıdan mükemmeldir.",
+    "price": 765.0199240671203,
+    "category": "Aydınlatma",
+    "brand": "Madame Coco",
+    "stock": 12,
+    "image": "https://picsum.photos/seed/lighting-691/400/300",
+    "images": [
+      {
+        "url": "https://picsum.photos/seed/chandelier-691-0/400/300",
+        "order": 0,
+        "isPrimary": true
+      },
+      {
+        "url": "https://picsum.photos/seed/pendant-691-1/400/300",
+        "order": 1,
+        "isPrimary": false
+      },
+      {
+        "url": "https://picsum.photos/seed/lighting-691-2/400/300",
+        "order": 2,
+        "isPrimary": false
+      },
+      {
+        "url": "https://picsum.photos/seed/chandelier-691-3/400/300",
+        "order": 3,
+        "isPrimary": false
+      }
+    ],
+    "features": [
+      "Alerjik olmayan",
+      "Şık görünüm",
+      "Ekonomik fiyat",
+      "Enerji tasarruflu",
+      "Modern tasarım",
+      "Kolay montaj"
+    ],
+    "specifications": "Malzeme: Metal, \nBoyutlar: 76x141x8 cm,\nAğırlık: 22.475053142809532 kg,\nRenk: Beyaz",
+    "isActive": true,
+    "averageRating": 4.6117047907557795,
+    "totalReviews": 79
+  },
+  {
+    "name": "Makyaj Masası",
+    "description": "Makyaj Masası, evinizin dekorasyonunu tamamlayacak kaliteli bir üründür. Modern tasarımı ile her ortama uyum sağlar. Dayanıklı malzemesi sayesinde uzun yıllar kullanabilirsiniz. yatak odası kategorisinde öne çıkan bu ürün, hem fonksiyonel hem de estetik açıdan mükemmeldir.",
+    "price": 3747.929209310164,
+    "category": "Yatak Odası",
+    "brand": "Arzum",
+    "stock": 139,
+    "image": "https://picsum.photos/seed/bed-491/400/300",
+    "images": [
+      {
+        "url": "https://picsum.photos/seed/bedding-491-0/400/300",
+        "order": 0,
+        "isPrimary": true
+      },
+      {
+        "url": "https://picsum.photos/seed/mattress-491-1/400/300",
+        "order": 1,
+        "isPrimary": false
+      },
+      {
+        "url": "https://picsum.photos/seed/mattress-491-2/400/300",
+        "order": 2,
+        "isPrimary": false
+      },
+      {
+        "url": "https://picsum.photos/seed/mattress-491-3/400/300",
+        "order": 3,
+        "isPrimary": false
+      }
+    ],
+    "features": [
+      "Çok amaçlı kullanım",
+      "2 yıl garantili",
+      "Su geçirmez"
+    ],
+    "specifications": "Malzeme: Metal, \nBoyutlar: 167x180x39 cm,\nAğırlık: 37.985035179347626 kg,\nRenk: Kahverengi",
+    "isActive": true,
+    "averageRating": 4.106020481434201,
+    "totalReviews": 110
+  },
+  {
+    "name": "Fiber Çiçek Saksısı",
+    "description": "Fiber Çiçek Saksısı, evinizin dekorasyonunu tamamlayacak kaliteli bir üründür. Modern tasarımı ile her ortama uyum sağlar. Dayanıklı malzemesi sayesinde uzun yıllar kullanabilirsiniz. bahçe kategorisinde öne çıkan bu ürün, hem fonksiyonel hem de estetik açıdan mükemmeldir.",
+    "price": 413.832738229715,
+    "category": "Bahçe",
+    "brand": "Bauhaus",
+    "stock": 89,
+    "image": "https://picsum.photos/seed/patio-345/400/300",
+    "images": [
+      {
+        "url": "https://picsum.photos/seed/garden-345-0/400/300",
+        "order": 0,
+        "isPrimary": true
+      },
+      {
+        "url": "https://picsum.photos/seed/furniture-outdoor-345-1/400/300",
+        "order": 1,
+        "isPrimary": false
+      },
+      {
+        "url": "https://picsum.photos/seed/garden-345-2/400/300",
+        "order": 2,
+        "isPrimary": false
+      }
+    ],
+    "features": [
+      "Su geçirmez",
+      "İthal kalite",
+      "UV korumalı"
+    ],
+    "specifications": "Malzeme: Deri, \nBoyutlar: 122x76x29 cm,\nAğırlık: 39.720012316206706 kg,\nRenk: Kırmızı",
+    "isActive": true,
+    "averageRating": 3.9274772215924054,
+    "totalReviews": 111
+  },
+  {
+    "name": "Yatak Odası Pufu",
+    "description": "Yatak Odası Pufu, evinizin dekorasyonunu tamamlayacak kaliteli bir üründür. Modern tasarımı ile her ortama uyum sağlar. Dayanıklı malzemesi sayesinde uzun yıllar kullanabilirsiniz. yatak odası kategorisinde öne çıkan bu ürün, hem fonksiyonel hem de estetik açıdan mükemmeldir.",
+    "price": 2953.623278695821,
+    "category": "Yatak Odası",
+    "brand": "H&M Home",
+    "stock": 51,
+    "image": "https://picsum.photos/seed/bedding-950/400/300",
+    "images": [
+      {
+        "url": "https://picsum.photos/seed/pillow-950-0/400/300",
+        "order": 0,
+        "isPrimary": true
+      },
+      {
+        "url": "https://picsum.photos/seed/bedroom-950-1/400/300",
+        "order": 1,
+        "isPrimary": false
+      }
+    ],
+    "features": [
+      "Enerji tasarruflu",
+      "El yapımı",
+      "Kolay montaj",
+      "Dayanıklı malzeme"
+    ],
+    "specifications": "Malzeme: Seramik, \nBoyutlar: 188x86x47 cm,\nAğırlık: 8.479928853680738 kg,\nRenk: Sarı",
+    "isActive": true,
+    "averageRating": 4.823898303162878,
+    "totalReviews": 280
+  },
+  {
+    "name": "Elektrikli Barbeku",
+    "description": "Elektrikli Barbeku, evinizin dekorasyonunu tamamlayacak kaliteli bir üründür. Modern tasarımı ile her ortama uyum sağlar. Dayanıklı malzemesi sayesinde uzun yıllar kullanabilirsiniz. bahçe kategorisinde öne çıkan bu ürün, hem fonksiyonel hem de estetik açıdan mükemmeldir.",
+    "price": 881.4331750005632,
+    "category": "Bahçe",
+    "brand": "Philips",
+    "stock": 61,
+    "image": "https://picsum.photos/seed/outdoor-797/400/300",
+    "images": [
+      {
+        "url": "https://picsum.photos/seed/garden-797-0/400/300",
+        "order": 0,
+        "isPrimary": true
+      },
+      {
+        "url": "https://picsum.photos/seed/furniture-outdoor-797-1/400/300",
+        "order": 1,
+        "isPrimary": false
+      },
+      {
+        "url": "https://picsum.photos/seed/plant-797-2/400/300",
+        "order": 2,
+        "isPrimary": false
+      }
+    ],
+    "features": [
+      "İthal kalite",
+      "Enerji tasarruflu",
+      "UV korumalı",
+      "Çevre dostu",
+      "Şık görünüm",
+      "Kolay temizlik"
+    ],
+    "specifications": "Malzeme: Kumaş, \nBoyutlar: 176x149x27 cm,\nAğırlık: 22.74491617162783 kg,\nRenk: Yeşil",
+    "isActive": true,
+    "averageRating": 3.092809486098501,
+    "totalReviews": 410
+  },
+  {
+    "name": "Dimmer Gece Lambası",
+    "description": "Dimmer Gece Lambası, evinizin dekorasyonunu tamamlayacak kaliteli bir üründür. Modern tasarımı ile her ortama uyum sağlar. Dayanıklı malzemesi sayesinde uzun yıllar kullanabilirsiniz. yatak odası kategorisinde öne çıkan bu ürün, hem fonksiyonel hem de estetik açıdan mükemmeldir.",
+    "price": 2900.9814025343767,
+    "category": "Yatak Odası",
+    "brand": "Taç",
+    "stock": 88,
+    "image": "https://picsum.photos/seed/pillow-226/400/300",
+    "images": [
+      {
+        "url": "https://picsum.photos/seed/mattress-226-0/400/300",
+        "order": 0,
+        "isPrimary": true
+      },
+      {
+        "url": "https://picsum.photos/seed/pillow-226-1/400/300",
+        "order": 1,
+        "isPrimary": false
+      }
+    ],
+    "features": [
+      "Çok amaçlı kullanım",
+      "UV korumalı",
+      "Şık görünüm"
+    ],
+    "specifications": "Malzeme: Kumaş, \nBoyutlar: 122x162x69 cm,\nAğırlık: 6.016196109314304 kg,\nRenk: Mor",
+    "isActive": true,
+    "averageRating": 3.6309994298944934,
+    "totalReviews": 359
+  },
+  {
+    "name": "Smoothie Blender",
+    "description": "Smoothie Blender, evinizin dekorasyonunu tamamlayacak kaliteli bir üründür. Modern tasarımı ile her ortama uyum sağlar. Dayanıklı malzemesi sayesinde uzun yıllar kullanabilirsiniz. mutfak kategorisinde öne çıkan bu ürün, hem fonksiyonel hem de estetik açıdan mükemmeldir.",
+    "price": 149.77990049007977,
+    "category": "Mutfak",
+    "brand": "Madame Coco",
+    "stock": 86,
+    "image": "https://picsum.photos/seed/cooking-849/400/300",
+    "images": [
+      {
+        "url": "https://picsum.photos/seed/cookware-849-0/400/300",
+        "order": 0,
+        "isPrimary": true
+      },
+      {
+        "url": "https://picsum.photos/seed/appliance-849-1/400/300",
+        "order": 1,
+        "isPrimary": false
+      },
+      {
+        "url": "https://picsum.photos/seed/kitchen-849-2/400/300",
+        "order": 2,
+        "isPrimary": false
+      },
+      {
+        "url": "https://picsum.photos/seed/utensils-849-3/400/300",
+        "order": 3,
+        "isPrimary": false
+      }
+    ],
+    "features": [
+      "Doğal malzeme",
+      "2 yıl garantili",
+      "Su geçirmez",
+      "UV korumalı",
+      "Antibakteriyel yüzey",
+      "Kolay temizlik"
+    ],
+    "specifications": "Malzeme: Seramik, \nBoyutlar: 113x22x56 cm,\nAğırlık: 39.64986511427355 kg,\nRenk: Beyaz",
+    "isActive": false,
+    "averageRating": 4.5909458154792455,
+    "totalReviews": 453
+  },
+  {
+    "name": "Chesterfield Koltuk",
+    "description": "Chesterfield Koltuk, evinizin dekorasyonunu tamamlayacak kaliteli bir üründür. Modern tasarımı ile her ortama uyum sağlar. Dayanıklı malzemesi sayesinde uzun yıllar kullanabilirsiniz. mobilya kategorisinde öne çıkan bu ürün, hem fonksiyonel hem de estetik açıdan mükemmeldir.",
+    "price": 2471.3059104236672,
+    "category": "Mobilya",
+    "brand": "Kütahya Porselen",
+    "stock": 112,
+    "image": "https://picsum.photos/seed/sofa-565/400/300",
+    "images": [
+      {
+        "url": "https://picsum.photos/seed/cabinet-565-0/400/300",
+        "order": 0,
+        "isPrimary": true
+      },
+      {
+        "url": "https://picsum.photos/seed/chair-565-1/400/300",
+        "order": 1,
+        "isPrimary": false
+      },
+      {
+        "url": "https://picsum.photos/seed/furniture-565-2/400/300",
+        "order": 2,
+        "isPrimary": false
+      },
+      {
+        "url": "https://picsum.photos/seed/cabinet-565-3/400/300",
+        "order": 3,
+        "isPrimary": false
+      }
+    ],
+    "features": [
+      "Ekonomik fiyat",
+      "Kolay temizlik",
+      "Isı yalıtımı"
+    ],
+    "specifications": "Malzeme: Seramik, \nBoyutlar: 128x179x18 cm,\nAğırlık: 5.967652443861541 kg,\nRenk: Mavi",
+    "isActive": true,
+    "averageRating": 4.647758443517459,
+    "totalReviews": 419
+  },
+  {
+    "name": "Tablet",
+    "description": "Tablet, evinizin dekorasyonunu tamamlayacak kaliteli bir üründür. Modern tasarımı ile her ortama uyum sağlar. Dayanıklı malzemesi sayesinde uzun yıllar kullanabilirsiniz. elektronik kategorisinde öne çıkan bu ürün, hem fonksiyonel hem de estetik açıdan mükemmeldir.",
+    "price": 6258.780615202692,
+    "category": "Elektronik",
+    "brand": "LC Waikiki Home",
+    "stock": 149,
+    "image": "https://picsum.photos/seed/device-545/400/300",
+    "images": [
+      {
+        "url": "https://picsum.photos/seed/smartphone-545-0/400/300",
+        "order": 0,
+        "isPrimary": true
+      },
+      {
+        "url": "https://picsum.photos/seed/technology-545-1/400/300",
+        "order": 1,
+        "isPrimary": false
+      },
+      {
+        "url": "https://picsum.photos/seed/gadget-545-2/400/300",
+        "order": 2,
+        "isPrimary": false
+      },
+      {
+        "url": "https://picsum.photos/seed/gadget-545-3/400/300",
+        "order": 3,
+        "isPrimary": false
+      }
+    ],
+    "features": [
+      "Isı yalıtımı",
+      "El yapımı",
+      "Enerji tasarruflu",
+      "Su geçirmez",
+      "Şık görünüm"
+    ],
+    "specifications": "Malzeme: Metal, \nBoyutlar: 65x102x36 cm,\nAğırlık: 33.96014424431829 kg,\nRenk: Siyah",
+    "isActive": true,
+    "averageRating": 3.1285905277053017,
+    "totalReviews": 475
+  },
+  {
+    "name": "Tablet",
+    "description": "Tablet, evinizin dekorasyonunu tamamlayacak kaliteli bir üründür. Modern tasarımı ile her ortama uyum sağlar. Dayanıklı malzemesi sayesinde uzun yıllar kullanabilirsiniz. elektronik kategorisinde öne çıkan bu ürün, hem fonksiyonel hem de estetik açıdan mükemmeldir.",
+    "price": 5701.141337333949,
+    "category": "Elektronik",
+    "brand": "Karaca",
+    "stock": 99,
+    "image": "https://picsum.photos/seed/smartphone-166/400/300",
+    "images": [
+      {
+        "url": "https://picsum.photos/seed/electronics-166-0/400/300",
+        "order": 0,
+        "isPrimary": true
+      },
+      {
+        "url": "https://picsum.photos/seed/gadget-166-1/400/300",
+        "order": 1,
+        "isPrimary": false
+      },
+      {
+        "url": "https://picsum.photos/seed/electronics-166-2/400/300",
+        "order": 2,
+        "isPrimary": false
+      }
+    ],
+    "features": [
+      "Antibakteriyel yüzey",
+      "Doğal malzeme",
+      "Alerjik olmayan"
+    ],
+    "specifications": "Malzeme: Kumaş, \nBoyutlar: 74x91x65 cm,\nAğırlık: 40.981797934315175 kg,\nRenk: Kırmızı",
+    "isActive": true,
+    "averageRating": 4.249610538964817,
+    "totalReviews": 38
+  },
+  {
+    "name": "Seramik Lavabo",
+    "description": "Seramik Lavabo, evinizin dekorasyonunu tamamlayacak kaliteli bir üründür. Modern tasarımı ile her ortama uyum sağlar. Dayanıklı malzemesi sayesinde uzun yıllar kullanabilirsiniz. banyo kategorisinde öne çıkan bu ürün, hem fonksiyonel hem de estetik açıdan mükemmeldir.",
+    "price": 505.7087743138034,
+    "category": "Banyo",
+    "brand": "Madame Coco",
+    "stock": 15,
+    "image": "https://picsum.photos/seed/shower-254/400/300",
+    "images": [
+      {
+        "url": "https://picsum.photos/seed/mirror-254-0/400/300",
+        "order": 0,
+        "isPrimary": true
+      },
+      {
+        "url": "https://picsum.photos/seed/bathroom-254-1/400/300",
+        "order": 1,
+        "isPrimary": false
+      }
+    ],
+    "features": [
+      "Kolay montaj",
+      "Ses yalıtımı",
+      "Kolay temizlik",
+      "Su geçirmez",
+      "Isı yalıtımı",
+      "UV korumalı"
+    ],
+    "specifications": "Malzeme: Metal, \nBoyutlar: 65x22x8 cm,\nAğırlık: 23.114093681243848 kg,\nRenk: Siyah",
+    "isActive": true,
+    "averageRating": 3.6861289660018928,
+    "totalReviews": 375
+  }
+]
